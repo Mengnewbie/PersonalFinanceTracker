@@ -1,0 +1,741 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\.gitignore||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:.gitignore||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\personalfinancetracker.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:personalfinancetracker.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\personalfinancetracker.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:personalfinancetracker.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\dashboardview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\dashboardview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\dashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\dashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\blackfintrack (1).ico||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:blackfintrack (1).ico||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F061C5AC-4C6A-4110-93F9-635AC1B8CB38}|Solution Items{F061C5AC-4C6A-4110-93F9-635AC1B8CB38}|C:\\Users\\PC\\Downloads\\BlackFinTrack.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\baseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\baseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\addedittransactionwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\addedittransactionwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\addedittransactionwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\addedittransactionwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\transactionsview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\transactionsview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\addeditbudgetwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\addeditbudgetwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\addeditbudgetwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\addeditbudgetwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\addeditcategorywindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\addeditcategorywindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\addeditcategorywindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\addeditcategorywindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\helpers\\validationhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:helpers\\validationhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\helpers\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:helpers\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\categoriesviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\categoriesviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\services\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:services\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\services\\transactionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:services\\transactionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\budgetview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\budgetview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\budgetview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\budgetview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\categoriesview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\categoriesview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\budgetitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\budgetitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\services\\budgetrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:services\\budgetrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\budgetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\budgetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\PC\\AppData\\Local\\Temp\\.vsdbgsrc\\0a84cc53936b314ba955b54f50bf4796d8234943f3fd7b93873381b45d404026\\XamlReader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\models\\budget.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:models\\budget.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\reportsview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\reportsview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\reportsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\reportsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\viewmodels\\transactionsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:viewmodels\\transactionsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\reportsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\reportsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\transactionsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\transactionsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\models\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:models\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\categoriesview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\categoriesview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\views\\dashboardview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:views\\dashboardview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|c:\\users\\pc\\source\\repos\\personalfinancetracker\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEFC2935-A65B-4789-AB72-7C0D437C6479}|PersonalFinanceTracker.csproj|solutionrelative:commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\PC\\AppData\\Local\\Temp\\.vsdbgsrc\\b49ace08f4cd26a4f275d628999a0f91ccb8a1892704530d9e6f5bd1284082f1\\ResourcePart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\App.xaml",
+              "RelativeDocumentMoniker": "App.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\App.xaml",
+              "RelativeToolTip": "App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T08:37:52.633Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-02-06T19:38:37.089Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-02-06T19:38:20.623Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DashboardView.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\DashboardView.xaml",
+              "RelativeDocumentMoniker": "Views\\DashboardView.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\DashboardView.xaml",
+              "RelativeToolTip": "Views\\DashboardView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T08:47:29.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PersonalFinanceTracker",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
+              "RelativeDocumentMoniker": "PersonalFinanceTracker.csproj",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
+              "RelativeToolTip": "PersonalFinanceTracker.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-06T19:16:53.314Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PersonalFinanceTracker.csproj",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
+              "RelativeDocumentMoniker": "PersonalFinanceTracker.csproj",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
+              "RelativeToolTip": "PersonalFinanceTracker.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-06T09:09:03.315Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DashboardViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\DashboardViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\DashboardViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\DashboardViewModel.cs",
+              "RelativeToolTip": "ViewModels\\DashboardViewModel.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAC8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:56:51.446Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BlackFinTrack (1).ico - Icon [32x32, 32 bit, BMP]",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\BlackFinTrack (1).ico",
+              "RelativeDocumentMoniker": "BlackFinTrack (1).ico",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\BlackFinTrack (1).ico - Icon [32x32, 32 bit, BMP]",
+              "RelativeToolTip": "BlackFinTrack (1).ico - Icon [32x32, 32 bit, BMP]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001525|",
+              "WhenOpened": "2026-02-06T19:20:37.919Z",
+              "EditorCaption": " - Icon [32x32, 32 bit, BMP]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BlackFinTrack.ico - Icon [32x32, 32 bit, BMP]",
+              "DocumentMoniker": "C:\\Users\\PC\\Downloads\\BlackFinTrack.ico",
+              "RelativeDocumentMoniker": "..\\..\\..\\Downloads\\BlackFinTrack.ico",
+              "ToolTip": "C:\\Users\\PC\\Downloads\\BlackFinTrack.ico - Icon [32x32, 32 bit, BMP]",
+              "RelativeToolTip": "..\\..\\..\\Downloads\\BlackFinTrack.ico - Icon [32x32, 32 bit, BMP]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001525|",
+              "WhenOpened": "2026-02-06T19:19:03.9Z",
+              "EditorCaption": " - Icon [32x32, 32 bit, BMP]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AddEditTransactionWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditTransactionWindow.xaml",
+              "RelativeDocumentMoniker": "Views\\AddEditTransactionWindow.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditTransactionWindow.xaml",
+              "RelativeToolTip": "Views\\AddEditTransactionWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T09:22:46.877Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BaseViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\BaseViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\BaseViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\BaseViewModel.cs",
+              "RelativeToolTip": "ViewModels\\BaseViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:39:48.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AddEditTransactionWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditTransactionWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\AddEditTransactionWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditTransactionWindow.xaml.cs",
+              "RelativeToolTip": "Views\\AddEditTransactionWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T09:23:27.44Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "TransactionsView.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\TransactionsView.xaml",
+              "RelativeDocumentMoniker": "Views\\TransactionsView.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\TransactionsView.xaml",
+              "RelativeToolTip": "Views\\TransactionsView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T08:48:51.419Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "Views\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\MainWindow.xaml",
+              "RelativeToolTip": "Views\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T08:36:02.942Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\MainWindow.xaml.cs",
+              "RelativeToolTip": "Views\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:36:01.308Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AddEditBudgetWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditBudgetWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\AddEditBudgetWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditBudgetWindow.xaml.cs",
+              "RelativeToolTip": "Views\\AddEditBudgetWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T13:54:31.48Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AddEditBudgetWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditBudgetWindow.xaml",
+              "RelativeDocumentMoniker": "Views\\AddEditBudgetWindow.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditBudgetWindow.xaml",
+              "RelativeToolTip": "Views\\AddEditBudgetWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T13:54:11.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\App.xaml.cs",
+              "RelativeDocumentMoniker": "App.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\App.xaml.cs",
+              "RelativeToolTip": "App.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T09:14:09.488Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "AddEditCategoryWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditCategoryWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\AddEditCategoryWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditCategoryWindow.xaml.cs",
+              "RelativeToolTip": "Views\\AddEditCategoryWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T09:32:12.27Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "AddEditCategoryWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditCategoryWindow.xaml",
+              "RelativeDocumentMoniker": "Views\\AddEditCategoryWindow.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\AddEditCategoryWindow.xaml",
+              "RelativeToolTip": "Views\\AddEditCategoryWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T09:40:34.184Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ValidationHelper.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Helpers\\ValidationHelper.cs",
+              "RelativeDocumentMoniker": "Helpers\\ValidationHelper.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Helpers\\ValidationHelper.cs",
+              "RelativeToolTip": "Helpers\\ValidationHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T18:29:36.388Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "DatabaseHelper.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Helpers\\DatabaseHelper.cs",
+              "RelativeDocumentMoniker": "Helpers\\DatabaseHelper.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Helpers\\DatabaseHelper.cs",
+              "RelativeToolTip": "Helpers\\DatabaseHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T09:13:36.061Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "BudgetView.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\BudgetView.xaml",
+              "RelativeDocumentMoniker": "Views\\BudgetView.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\BudgetView.xaml",
+              "RelativeToolTip": "Views\\BudgetView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T14:23:02.272Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "CategoriesViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\CategoriesViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\CategoriesViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\CategoriesViewModel.cs",
+              "RelativeToolTip": "ViewModels\\CategoriesViewModel.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAcwCEAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:57:50.958Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "TransactionRepository.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Services\\TransactionRepository.cs",
+              "RelativeDocumentMoniker": "Services\\TransactionRepository.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Services\\TransactionRepository.cs",
+              "RelativeToolTip": "Services\\TransactionRepository.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAADgv4kAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T09:15:03.875Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "CategoryRepository.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Services\\CategoryRepository.cs",
+              "RelativeDocumentMoniker": "Services\\CategoryRepository.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Services\\CategoryRepository.cs",
+              "RelativeToolTip": "Services\\CategoryRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T09:15:36.315Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "BudgetItemViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\BudgetItemViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\BudgetItemViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\BudgetItemViewModel.cs",
+              "RelativeToolTip": "ViewModels\\BudgetItemViewModel.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAswG8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T13:40:22.967Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "BudgetView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\BudgetView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\BudgetView.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\BudgetView.xaml.cs",
+              "RelativeToolTip": "Views\\BudgetView.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T14:23:23.611Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "CategoriesView.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\CategoriesView.xaml",
+              "RelativeDocumentMoniker": "Views\\CategoriesView.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\CategoriesView.xaml",
+              "RelativeToolTip": "Views\\CategoriesView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T08:49:34.135Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "BudgetRepository.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Services\\BudgetRepository.cs",
+              "RelativeDocumentMoniker": "Services\\BudgetRepository.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Services\\BudgetRepository.cs",
+              "RelativeToolTip": "Services\\BudgetRepository.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAwCYAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T13:39:26.379Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "BudgetViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\BudgetViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\BudgetViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\BudgetViewModel.cs",
+              "RelativeToolTip": "ViewModels\\BudgetViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T13:41:20.359Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "XamlReader.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\AppData\\Local\\Temp\\.vsdbgsrc\\0a84cc53936b314ba955b54f50bf4796d8234943f3fd7b93873381b45d404026\\XamlReader.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0a84cc53936b314ba955b54f50bf4796d8234943f3fd7b93873381b45d404026\\XamlReader.cs",
+              "ToolTip": "C:\\Users\\PC\\AppData\\Local\\Temp\\.vsdbgsrc\\0a84cc53936b314ba955b54f50bf4796d8234943f3fd7b93873381b45d404026\\XamlReader.cs [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0a84cc53936b314ba955b54f50bf4796d8234943f3fd7b93873381b45d404026\\XamlReader.cs [Read Only]",
+              "ViewState": "AgIAAKMBAAAAAAAAAAAwwLUBAAAsAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T14:04:26.808Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "MainViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\MainViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\MainViewModel.cs",
+              "RelativeToolTip": "ViewModels\\MainViewModel.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAADwv0IAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:42:41.605Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Budget.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Models\\Budget.cs",
+              "RelativeDocumentMoniker": "Models\\Budget.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Models\\Budget.cs",
+              "RelativeToolTip": "Models\\Budget.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T13:36:56.95Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "ReportsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\ReportsViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\ReportsViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\ReportsViewModel.cs",
+              "RelativeToolTip": "ViewModels\\ReportsViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJ4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:58:12.312Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "ReportsView.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\ReportsView.xaml",
+              "RelativeDocumentMoniker": "Views\\ReportsView.xaml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\ReportsView.xaml",
+              "RelativeToolTip": "Views\\ReportsView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-06T08:50:16.24Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "TransactionsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\TransactionsViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\TransactionsViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\ViewModels\\TransactionsViewModel.cs",
+              "RelativeToolTip": "ViewModels\\TransactionsViewModel.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAmwDgAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:57:19.883Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "Models\\Category.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Models\\Category.cs",
+              "RelativeToolTip": "Models\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:56:18.314Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "ReportsView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\ReportsView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\ReportsView.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\ReportsView.xaml.cs",
+              "RelativeToolTip": "Views\\ReportsView.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:54:37.289Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "TransactionsView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\TransactionsView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\TransactionsView.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\TransactionsView.xaml.cs",
+              "RelativeToolTip": "Views\\TransactionsView.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:49:10.178Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Transaction.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Models\\Transaction.cs",
+              "RelativeDocumentMoniker": "Models\\Transaction.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Models\\Transaction.cs",
+              "RelativeToolTip": "Models\\Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:55:50.558Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "CategoriesView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\CategoriesView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\CategoriesView.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\CategoriesView.xaml.cs",
+              "RelativeToolTip": "Views\\CategoriesView.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:49:49.132Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "DashboardView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\DashboardView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\DashboardView.xaml.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Views\\DashboardView.xaml.cs",
+              "RelativeToolTip": "Views\\DashboardView.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:48:09.693Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "RelayCommand.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Commands\\RelayCommand.cs",
+              "RelativeDocumentMoniker": "Commands\\RelayCommand.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\PersonalFinanceTracker\\Commands\\RelayCommand.cs",
+              "RelativeToolTip": "Commands\\RelayCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:41:19.817Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "ResourcePart.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\AppData\\Local\\Temp\\.vsdbgsrc\\b49ace08f4cd26a4f275d628999a0f91ccb8a1892704530d9e6f5bd1284082f1\\ResourcePart.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\b49ace08f4cd26a4f275d628999a0f91ccb8a1892704530d9e6f5bd1284082f1\\ResourcePart.cs",
+              "ToolTip": "C:\\Users\\PC\\AppData\\Local\\Temp\\.vsdbgsrc\\b49ace08f4cd26a4f275d628999a0f91ccb8a1892704530d9e6f5bd1284082f1\\ResourcePart.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\b49ace08f4cd26a4f275d628999a0f91ccb8a1892704530d9e6f5bd1284082f1\\ResourcePart.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAIBZwAgAAAAAAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T08:38:26.05Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
