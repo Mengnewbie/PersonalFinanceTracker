@@ -3,6 +3,8 @@
 *.sqlite3
 *.mdf
 *.ldf
+*.user
+Properties/PublishProfiles/
 
 .vs/
 bin/
