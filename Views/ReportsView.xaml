@@ -1,237 +1,613 @@
-﻿<UserControl
+﻿<UserControl x:Class="PersonalFinanceTracker.Views.ReportsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:viewmodels="clr-namespace:PersonalFinanceTracker.ViewModels"
-             xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="PersonalFinanceTracker.Views.ReportsView"
-             Background="White" av:DesignWidth="1111.588">
+             Background="White">
 
     <UserControl.DataContext>
         <viewmodels:ReportsViewModel />
     </UserControl.DataContext>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Header -->
-        <TextBlock Grid.Row="0" 
-                   Text="Reports &amp; Analytics" 
-                   FontSize="28" 
-                   FontWeight="Bold"
-                   Foreground="#2C3E50"
-                   Margin="0,0,0,20"/>
-
-        <!-- Charts Grid -->
-        <Grid Grid.Row="1">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="0,0,0,20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
-            <!-- Expense Breakdown Pie Chart -->
-            <Border Grid.Row="0" Grid.Column="0" 
-                    Background="White" 
+            <!-- Header with Time Period Filter -->
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="Reports &amp; Analytics" 
+                           FontSize="28" 
+                           FontWeight="Bold"
+                           Foreground="#2C3E50"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Time Period:" 
+                               FontSize="14"
+                               Foreground="#7F8C8D"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                    <ComboBox ItemsSource="{Binding TimePeriods}"
+                              SelectedItem="{Binding SelectedPeriod}"
+                              Width="150"
+                              Height="35"
+                              FontSize="14"
+                              Padding="10,5"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Summary Statistics Cards -->
+            <Grid Grid.Row="1" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Total Income Card -->
+                <Border Grid.Column="0"
+                        Background="#27AE60"
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="Total Income"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   Opacity="0.9"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding TotalIncome, StringFormat=C}"
+                                   Foreground="White"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding IncomeTransactions, StringFormat={}{0} transactions}"
+                                   Foreground="White"
+                                   FontSize="11"
+                                   Opacity="0.8"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Total Expenses Card -->
+                <Border Grid.Column="1"
+                        Background="#E74C3C"
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="4,0,4,0">
+                    <StackPanel>
+                        <TextBlock Text="Total Expenses"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   Opacity="0.9"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding TotalExpenses, StringFormat=C}"
+                                   Foreground="White"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding ExpenseTransactions, StringFormat={}{0} transactions}"
+                                   Foreground="White"
+                                   FontSize="11"
+                                   Opacity="0.8"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Net Savings Card -->
+                <Border Grid.Column="2"
+                        Background="#3498DB"
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="4,0,4,0">
+                    <StackPanel>
+                        <TextBlock Text="Net Savings"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   Opacity="0.9"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding NetSavings, StringFormat=C}"
+                                   Foreground="White"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding SavingsRate, StringFormat={}{0:F1}% savings rate}"
+                                   Foreground="White"
+                                   FontSize="11"
+                                   Opacity="0.8"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Daily Average Card -->
+                <Border Grid.Column="3"
+                        Background="#9B59B6"
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="8,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Daily Average"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   Opacity="0.9"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding DailyAverage, StringFormat=C}"
+                                   Foreground="White"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding DaysAnalyzed, StringFormat={}{0} days analyzed}"
+                                   Foreground="White"
+                                   FontSize="11"
+                                   Opacity="0.8"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Row 2: Income vs Expenses Comparison + Pie Charts -->
+            <Grid Grid.Row="2" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Income vs Expenses Bar Chart -->
+                <Border Grid.Column="0"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="0,0,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Income vs Expenses"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,10"/>
+
+                        <lvc:CartesianChart Grid.Row="1"
+                                            Series="{Binding IncomeExpenseBarSeries}"
+                                            XAxes="{Binding IncomeExpenseXAxes}"
+                                            LegendPosition="Bottom"
+                                            LegendTextSize="11"
+                                            Height="200"/>
+                    </Grid>
+                </Border>
+
+                <!-- Expense Breakdown Pie Chart -->
+                <Border Grid.Column="1"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="5,0,5,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Expense Breakdown"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,10"/>
+
+                        <lvc:PieChart Grid.Row="1"
+                                      Series="{Binding ExpensePieSeries}"
+                                      LegendPosition="Right"
+                                      LegendTextSize="10"
+                                      InitialRotation="-90"
+                                      Height="200"/>
+                    </Grid>
+                </Border>
+
+                <!-- Income Sources Pie Chart -->
+                <Border Grid.Column="2"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="10,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Income Sources"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,10"/>
+
+                        <lvc:PieChart Grid.Row="1"
+                                      Series="{Binding IncomePieSeries}"
+                                      LegendPosition="Right"
+                                      LegendTextSize="10"
+                                      InitialRotation="-90"
+                                      Height="200"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Row 3: Monthly Trend Chart (Full Width) -->
+            <Border Grid.Row="3"
+                    Background="White"
                     BorderBrush="#E0E0E0"
                     BorderThickness="1"
                     CornerRadius="8"
-                    Margin="0,0,10,10"
-                    Padding="15">
+                    Padding="20"
+                    Margin="0,0,0,20">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" 
-                               Text="Expense Breakdown by Category" 
+                    <TextBlock Grid.Row="0"
+                               Text="Monthly Income &amp; Expense Trend"
                                FontSize="18"
                                FontWeight="SemiBold"
                                Foreground="#2C3E50"
-                               Margin="0,0,0,10"/>
-
-                    <lvc:PieChart Grid.Row="1"
-                                  Series="{Binding ExpensePieSeries}"
-                                  LegendPosition="Right"
-                                  LegendTextSize="12"
-                                  InitialRotation="-90"/>
-                </Grid>
-            </Border>
-
-            <!-- Income vs Expenses Bar Chart -->
-            <Border Grid.Row="0" Grid.Column="1" 
-                    Background="White" 
-                    BorderBrush="#E0E0E0"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Margin="10,0,0,10"
-                    Padding="15">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0" 
-                               Text="Income vs Expenses" 
-                               FontSize="18"
-                               FontWeight="SemiBold"
-                               Foreground="#2C3E50"
-                               Margin="0,0,0,10"/>
+                               Margin="0,0,0,15"/>
 
                     <lvc:CartesianChart Grid.Row="1"
-                                        Series="{Binding IncomeExpenseBarSeries}"
-                                        XAxes="{Binding IncomeExpenseXAxes}"
+                                        Series="{Binding MonthlyTrendSeries}"
+                                        XAxes="{Binding MonthlyTrendXAxes}"
                                         LegendPosition="Top"
-                                        LegendTextSize="12"/>
+                                        LegendTextSize="12"
+                                        Height="300"/>
                 </Grid>
             </Border>
 
-            <!-- Summary Card -->
-            <Border Grid.Row="1" Grid.Column="0" 
-                    Background="White" 
-                    BorderBrush="#E0E0E0"
+            <!-- Row 4: Category Trend + Day of Week Analysis -->
+            <Grid Grid.Row="4" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Top 5 Categories Trend -->
+                <Border Grid.Column="0"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="20"
+                        Margin="0,0,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Top 5 Categories Over Time"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,15"/>
+
+                        <lvc:CartesianChart Grid.Row="1"
+                                            Series="{Binding CategoryTrendSeries}"
+                                            XAxes="{Binding CategoryTrendXAxes}"
+                                            LegendPosition="Top"
+                                            LegendTextSize="11"
+                                            Height="280"/>
+                    </Grid>
+                </Border>
+
+                <!-- Day of Week Analysis -->
+                <Border Grid.Column="1"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="20"
+                        Margin="10,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Spending by Day"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,15"/>
+
+                        <lvc:CartesianChart Grid.Row="1"
+                                            Series="{Binding DayOfWeekSeries}"
+                                            XAxes="{Binding DayOfWeekXAxes}"
+                                            LegendPosition="Hidden"
+                                            Height="280"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Row 5: Detailed Statistics Tables -->
+            <Grid Grid.Row="5" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Category Statistics Table -->
+                <Border Grid.Column="0"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="20"
+                        Margin="0,0,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Category Performance"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,15"/>
+
+                        <ScrollViewer Grid.Row="1" 
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="300">
+                            <ItemsControl ItemsSource="{Binding CategoryStats}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#F8F9FA"
+                                                CornerRadius="5"
+                                                Padding="12"
+                                                Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Header -->
+                                                <Grid Grid.Row="0" Margin="0,0,0,8">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border Width="30"
+                                                                Height="30"
+                                                                CornerRadius="15"
+                                                                Background="{Binding Color}"
+                                                                Margin="0,0,8,0">
+                                                            <TextBlock Text="{Binding Icon}"
+                                                                       FontSize="16"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Category}"
+                                                                       FontWeight="SemiBold"
+                                                                       FontSize="13"
+                                                                       Foreground="#2C3E50"/>
+                                                            <TextBlock Text="{Binding Count, StringFormat={}{0} transactions}"
+                                                                       FontSize="10"
+                                                                       Foreground="#7F8C8D"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+
+                                                    <StackPanel HorizontalAlignment="Right"
+                                                                VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Total, StringFormat=C}"
+                                                                   FontSize="16"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="#E74C3C"
+                                                                   HorizontalAlignment="Right"/>
+                                                        <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%}"
+                                                                   FontSize="11"
+                                                                   Foreground="#95A5A6"
+                                                                   HorizontalAlignment="Right"/>
+                                                    </StackPanel>
+                                                </Grid>
+
+                                                <!-- Progress Bar -->
+                                                <Grid Grid.Row="1">
+                                                    <ProgressBar Height="6"
+                                                                 Value="{Binding Percentage}"
+                                                                 Maximum="100"
+                                                                 Background="#ECF0F1"
+                                                                 Foreground="{Binding Color}"
+                                                                 BorderThickness="0"/>
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <!-- Income Sources Table -->
+                <Border Grid.Column="1"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="20"
+                        Margin="10,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Income Source Breakdown"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,15"/>
+
+                        <ScrollViewer Grid.Row="1" 
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="300">
+                            <ItemsControl ItemsSource="{Binding IncomeSources}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#F8F9FA"
+                                                CornerRadius="5"
+                                                Padding="12"
+                                                Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Header -->
+                                                <Grid Grid.Row="0" Margin="0,0,0,8">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border Width="30"
+                                                                Height="30"
+                                                                CornerRadius="15"
+                                                                Background="{Binding Color}"
+                                                                Margin="0,0,8,0">
+                                                            <TextBlock Text="{Binding Icon}"
+                                                                       FontSize="16"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Source}"
+                                                                       FontWeight="SemiBold"
+                                                                       FontSize="13"
+                                                                       Foreground="#2C3E50"/>
+                                                            <TextBlock Text="{Binding Count, StringFormat={}{0} transactions}"
+                                                                       FontSize="10"
+                                                                       Foreground="#7F8C8D"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+
+                                                    <StackPanel HorizontalAlignment="Right"
+                                                                VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Total, StringFormat=C}"
+                                                                   FontSize="16"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="#27AE60"
+                                                                   HorizontalAlignment="Right"/>
+                                                        <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%}"
+                                                                   FontSize="11"
+                                                                   Foreground="#95A5A6"
+                                                                   HorizontalAlignment="Right"/>
+                                                    </StackPanel>
+                                                </Grid>
+
+                                                <!-- Progress Bar -->
+                                                <Grid Grid.Row="1">
+                                                    <ProgressBar Height="6"
+                                                                 Value="{Binding Percentage}"
+                                                                 Maximum="100"
+                                                                 Background="#ECF0F1"
+                                                                 Foreground="{Binding Color}"
+                                                                 BorderThickness="0"/>
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Row 6: Key Insights Summary -->
+            <Border Grid.Row="6"
+                    Background="#ECF0F1"
+                    BorderBrush="#BDC3C7"
                     BorderThickness="1"
                     CornerRadius="8"
-                    Margin="0,10,10,0"
-                    Padding="15">
+                    Padding="20">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="0" 
-                               Text="Summary" 
-                               FontSize="18"
-                               FontWeight="SemiBold"
-                               Foreground="#2C3E50"
-                               Margin="0,0,0,15"/>
+                    <TextBlock Grid.Column="0"
+                               Text="💡"
+                               FontSize="32"
+                               VerticalAlignment="Top"
+                               Margin="0,0,15,0"/>
 
-                    <StackPanel Grid.Row="1" VerticalAlignment="Center">
-                        <Border Background="#ECF0F1" 
-                                CornerRadius="5"
-                                Padding="15"
-                                Margin="0,0,0,10">
-                            <Grid>
-                                <TextBlock Text="Total Transactions" 
-                                           FontSize="14" 
-                                           Foreground="#7F8C8D"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Text="View all transactions to see detailed breakdown" 
-                                           FontSize="16" 
-                                           FontWeight="SemiBold"
-                                           Foreground="#2C3E50"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Key Insights"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,10"/>
 
-                        <Border Background="#ECF0F1" 
-                                CornerRadius="5"
-                                Padding="15"
-                                Margin="0,0,0,10">
-                            <Grid>
-                                <TextBlock Text="Most Used Category" 
-                                           FontSize="14" 
-                                           Foreground="#7F8C8D"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Text="Add transactions to see insights" 
-                                           FontSize="16" 
-                                           FontWeight="SemiBold"
-                                           Foreground="#2C3E50"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="💡 Tip: Add more transactions to see detailed analytics" 
-                                   FontSize="12"
-                                   Foreground="#95A5A6"
-                                   TextWrapping="Wrap"
-                                   Margin="0,10,0,0"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <!-- Quick Stats -->
-            <Border Grid.Row="1" Grid.Column="1" 
-                    Background="White" 
-                    BorderBrush="#E0E0E0"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Margin="10,10,0,0"
-                    Padding="15">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0" 
-                               Text="Quick Stats" 
-                               FontSize="18"
-                               FontWeight="SemiBold"
-                               Foreground="#2C3E50"
-                               Margin="0,0,0,15"/>
-
-                    <StackPanel Grid.Row="1" VerticalAlignment="Center">
-                        <Border Background="#E8F8F5" 
-                                CornerRadius="5"
-                                Padding="15"
-                                Margin="0,0,0,10">
-                            <StackPanel>
-                                <TextBlock Text="Average Transaction" 
-                                           FontSize="12" 
-                                           Foreground="#16A085"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock Text="Coming Soon" 
-                                           FontSize="20" 
-                                           FontWeight="Bold"
-                                           Foreground="#16A085"/>
+                            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                <TextBlock FontSize="13" Foreground="#34495E" TextWrapping="Wrap" Margin="0,0,0,8">
+                                    <Run Text="• Most Used Category: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding MostUsedCategory}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="13" Foreground="#34495E" TextWrapping="Wrap" Margin="0,0,0,8">
+                                    <Run Text="• Average Income per Transaction: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding AverageIncome, StringFormat=C}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="13" Foreground="#34495E" TextWrapping="Wrap">
+                                    <Run Text="• Average Expense per Transaction: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding AverageExpense, StringFormat=C}"/>
+                                </TextBlock>
                             </StackPanel>
-                        </Border>
 
-                        <Border Background="#FEF5E7" 
-                                CornerRadius="5"
-                                Padding="15"
-                                Margin="0,0,0,10">
-                            <StackPanel>
-                                <TextBlock Text="Largest Expense" 
-                                           FontSize="12" 
-                                           Foreground="#D68910"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock Text="Coming Soon" 
-                                           FontSize="20" 
-                                           FontWeight="Bold"
-                                           Foreground="#D68910"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock FontSize="13" Foreground="#34495E" TextWrapping="Wrap" Margin="0,0,0,8">
+                                    <Run Text="• Largest Single Income: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding LargestIncome, StringFormat=C}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="13" Foreground="#34495E" TextWrapping="Wrap" Margin="0,0,0,8">
+                                    <Run Text="• Largest Single Expense: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding LargestExpense, StringFormat=C}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="13" Foreground="#34495E" TextWrapping="Wrap">
+                                    <Run Text="• Total Transactions Analyzed: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding TotalTransactions}"/>
+                                </TextBlock>
                             </StackPanel>
-                        </Border>
-
-                        <Border Background="#FADBD8" 
-                                CornerRadius="5"
-                                Padding="15">
-                            <StackPanel>
-                                <TextBlock Text="Monthly Average" 
-                                           FontSize="12" 
-                                           Foreground="#C0392B"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock Text="Coming Soon" 
-                                           FontSize="20" 
-                                           FontWeight="Bold"
-                                           Foreground="#C0392B"/>
-                            </StackPanel>
-                        </Border>
+                        </Grid>
                     </StackPanel>
                 </Grid>
             </Border>
 
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </UserControl>
