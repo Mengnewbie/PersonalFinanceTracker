@@ -40,38 +40,40 @@ namespace PersonalFinanceTracker.Helpers
             connection.Open();
 
             string createCategoriesTable = @"
-                CREATE TABLE IF NOT EXISTS Categories (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Name TEXT NOT NULL,
-                    Type TEXT NOT NULL,
-                    Icon TEXT,
-                    Color TEXT
-                );";
+        CREATE TABLE IF NOT EXISTS Categories (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Name TEXT NOT NULL,
+            Type TEXT NOT NULL,
+            Icon TEXT,
+            Color TEXT
+        );";
 
             string createTransactionsTable = @"
-                CREATE TABLE IF NOT EXISTS Transactions (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Date TEXT NOT NULL,
-                    Description TEXT NOT NULL,
-                    Category TEXT NOT NULL,
-                    Type TEXT NOT NULL,
-                    Amount REAL NOT NULL
-                );";
+        CREATE TABLE IF NOT EXISTS Transactions (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Date TEXT NOT NULL,
+            Description TEXT NOT NULL,
+            Category TEXT NOT NULL,
+            Type TEXT NOT NULL,
+            Amount REAL NOT NULL,
+            Currency TEXT NOT NULL DEFAULT 'USD'
+        );";
 
             string createBudgetsTable = @"
-                CREATE TABLE IF NOT EXISTS Budgets (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Category TEXT NOT NULL,
-                    BudgetAmount REAL NOT NULL,
-                    Period TEXT NOT NULL
-                );";
+        CREATE TABLE IF NOT EXISTS Budgets (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Category TEXT NOT NULL,
+            BudgetAmount REAL NOT NULL,
+            Period TEXT NOT NULL,
+            Currency TEXT NOT NULL DEFAULT 'USD'
+        );";
 
             string createSettingsTable = @"
-                CREATE TABLE IF NOT EXISTS Settings (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    SelectedCurrency TEXT NOT NULL DEFAULT 'USD',
-                    BaseCurrency TEXT NOT NULL DEFAULT 'USD'
-                );";
+        CREATE TABLE IF NOT EXISTS Settings (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            SelectedCurrency TEXT NOT NULL DEFAULT 'USD',
+            BaseCurrency TEXT NOT NULL DEFAULT 'USD'
+        );";
 
             using (var command = new SQLiteCommand(createCategoriesTable, connection))
             {
@@ -93,7 +95,6 @@ namespace PersonalFinanceTracker.Helpers
                 command.ExecuteNonQuery();
             }
 
-            // Initialize default settings
             InitializeSettings(connection);
         }
 

@@ -8,15 +8,22 @@ namespace PersonalFinanceTracker.Services
 {
     public class TransactionRepository
     {
-        // CREATE - Add new transaction
+        private readonly CurrencyService _currencyService;
+
+        public TransactionRepository()
+        {
+            _currencyService = new CurrencyService();
+        }
+
+        // CREATE
         public void Add(Transaction transaction)
         {
             using var connection = DatabaseHelper.GetConnection();
             connection.Open();
 
             string query = @"
-                INSERT INTO Transactions (Date, Description, Category, Type, Amount)
-                VALUES (@Date, @Description, @Category, @Type, @Amount);";
+                INSERT INTO Transactions (Date, Description, Category, Type, Amount, Currency)
+                VALUES (@Date, @Description, @Category, @Type, @Amount, @Currency);";
 
             using var command = new SQLiteCommand(query, connection);
             command.Parameters.AddWithValue("@Date", transaction.Date.ToString("yyyy-MM-dd"));
@@ -24,11 +31,12 @@ namespace PersonalFinanceTracker.Services
             command.Parameters.AddWithValue("@Category", transaction.Category);
             command.Parameters.AddWithValue("@Type", transaction.Type);
             command.Parameters.AddWithValue("@Amount", transaction.Amount);
+            command.Parameters.AddWithValue("@Currency", transaction.Currency);
 
             command.ExecuteNonQuery();
         }
 
-        // READ - Get all transactions
+        // READ
         public List<Transaction> GetAll()
         {
             var transactions = new List<Transaction>();
@@ -43,36 +51,7 @@ namespace PersonalFinanceTracker.Services
 
             while (reader.Read())
             {
-                transactions.Add(new Transaction
-                {
-                    Id = reader.GetInt32(0),
-                    Date = DateTime.Parse(reader.GetString(1)),
-                    Description = reader.GetString(2),
-                    Category = reader.GetString(3),
-                    Type = reader.GetString(4),
-                    Amount = reader.GetDecimal(5)
-                });
-            }
-
-            return transactions;
-        }
-
-        // READ - Get transaction by ID
-        public Transaction? GetById(int id)
-        {
-            using var connection = DatabaseHelper.GetConnection();
-            connection.Open();
-
-            string query = "SELECT * FROM Transactions WHERE Id = @Id;";
-
-            using var command = new SQLiteCommand(query, connection);
-            command.Parameters.AddWithValue("@Id", id);
-
-            using var reader = command.ExecuteReader();
-
-            if (reader.Read())
-            {
-                return new Transaction
+                var transaction = new Transaction
                 {
                     Id = reader.GetInt32(0),
                     Date = DateTime.Parse(reader.GetString(1)),
@@ -81,12 +60,24 @@ namespace PersonalFinanceTracker.Services
                     Type = reader.GetString(4),
                     Amount = reader.GetDecimal(5)
                 };
+
+                // Try to get Currency column (might not exist in old databases)
+                try
+                {
+                    transaction.Currency = reader.GetString(6);
+                }
+                catch
+                {
+                    transaction.Currency = "USD"; // Default for old records
+                }
+
+                transactions.Add(transaction);
             }
 
-            return null;
+            return transactions;
         }
 
-        // UPDATE - Edit existing transaction
+        // UPDATE
         public void Update(Transaction transaction)
         {
             using var connection = DatabaseHelper.GetConnection();
@@ -98,7 +89,8 @@ namespace PersonalFinanceTracker.Services
                     Description = @Description, 
                     Category = @Category, 
                     Type = @Type, 
-                    Amount = @Amount
+                    Amount = @Amount,
+                    Currency = @Currency
                 WHERE Id = @Id;";
 
             using var command = new SQLiteCommand(query, connection);
@@ -108,11 +100,12 @@ namespace PersonalFinanceTracker.Services
             command.Parameters.AddWithValue("@Category", transaction.Category);
             command.Parameters.AddWithValue("@Type", transaction.Type);
             command.Parameters.AddWithValue("@Amount", transaction.Amount);
+            command.Parameters.AddWithValue("@Currency", transaction.Currency);
 
             command.ExecuteNonQuery();
         }
 
-        // DELETE - Remove transaction
+        // DELETE
         public void Delete(int id)
         {
             using var connection = DatabaseHelper.GetConnection();
@@ -126,32 +119,40 @@ namespace PersonalFinanceTracker.Services
             command.ExecuteNonQuery();
         }
 
-        // Get total income
+        // Get total income (converted to base currency USD)
         public decimal GetTotalIncome()
         {
-            using var connection = DatabaseHelper.GetConnection();
-            connection.Open();
+            var transactions = GetAll();
+            decimal total = 0;
 
-            string query = "SELECT COALESCE(SUM(Amount), 0) FROM Transactions WHERE Type = 'Income';";
+            foreach (var t in transactions)
+            {
+                if (t.Type == "Income")
+                {
+                    // Convert to USD for calculation
+                    total += _currencyService.ConvertToUSD(t.Amount, t.Currency);
+                }
+            }
 
-            using var command = new SQLiteCommand(query, connection);
-            var result = command.ExecuteScalar();
-
-            return Convert.ToDecimal(result);
+            return total;
         }
 
-        // Get total expenses
+        // Get total expenses (converted to base currency USD)
         public decimal GetTotalExpenses()
         {
-            using var connection = DatabaseHelper.GetConnection();
-            connection.Open();
+            var transactions = GetAll();
+            decimal total = 0;
 
-            string query = "SELECT COALESCE(SUM(Amount), 0) FROM Transactions WHERE Type = 'Expense';";
+            foreach (var t in transactions)
+            {
+                if (t.Type == "Expense")
+                {
+                    // Convert to USD for calculation
+                    total += _currencyService.ConvertToUSD(t.Amount, t.Currency);
+                }
+            }
 
-            using var command = new SQLiteCommand(query, connection);
-            var result = command.ExecuteScalar();
-
-            return Convert.ToDecimal(result);
+            return total;
         }
     }
 }

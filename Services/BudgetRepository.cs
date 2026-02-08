@@ -7,25 +7,26 @@ namespace PersonalFinanceTracker.Services
 {
     public class BudgetRepository
     {
-        // CREATE - Add new budget
+        // CREATE
         public void Add(Budget budget)
         {
             using var connection = DatabaseHelper.GetConnection();
             connection.Open();
 
             string query = @"
-                INSERT INTO Budgets (Category, BudgetAmount, Period)
-                VALUES (@Category, @BudgetAmount, @Period);";
+                INSERT INTO Budgets (Category, BudgetAmount, Period, Currency)
+                VALUES (@Category, @BudgetAmount, @Period, @Currency);";
 
             using var command = new SQLiteCommand(query, connection);
             command.Parameters.AddWithValue("@Category", budget.Category);
             command.Parameters.AddWithValue("@BudgetAmount", budget.BudgetAmount);
             command.Parameters.AddWithValue("@Period", budget.Period);
+            command.Parameters.AddWithValue("@Currency", budget.Currency);
 
             command.ExecuteNonQuery();
         }
 
-        // READ - Get all budgets
+        // READ
         public List<Budget> GetAll()
         {
             var budgets = new List<Budget>();
@@ -40,19 +41,31 @@ namespace PersonalFinanceTracker.Services
 
             while (reader.Read())
             {
-                budgets.Add(new Budget
+                var budget = new Budget
                 {
                     Id = reader.GetInt32(0),
                     Category = reader.GetString(1),
                     BudgetAmount = reader.GetDecimal(2),
                     Period = reader.GetString(3)
-                });
+                };
+
+                // Try to get Currency column
+                try
+                {
+                    budget.Currency = reader.GetString(4);
+                }
+                catch
+                {
+                    budget.Currency = "USD"; // Default for old records
+                }
+
+                budgets.Add(budget);
             }
 
             return budgets;
         }
 
-        // READ - Get budget by category
+        // READ by category
         public Budget? GetByCategory(string category)
         {
             using var connection = DatabaseHelper.GetConnection();
@@ -67,19 +80,30 @@ namespace PersonalFinanceTracker.Services
 
             if (reader.Read())
             {
-                return new Budget
+                var budget = new Budget
                 {
                     Id = reader.GetInt32(0),
                     Category = reader.GetString(1),
                     BudgetAmount = reader.GetDecimal(2),
                     Period = reader.GetString(3)
                 };
+
+                try
+                {
+                    budget.Currency = reader.GetString(4);
+                }
+                catch
+                {
+                    budget.Currency = "USD";
+                }
+
+                return budget;
             }
 
             return null;
         }
 
-        // UPDATE - Edit existing budget
+        // UPDATE
         public void Update(Budget budget)
         {
             using var connection = DatabaseHelper.GetConnection();
@@ -89,7 +113,8 @@ namespace PersonalFinanceTracker.Services
                 UPDATE Budgets 
                 SET Category = @Category, 
                     BudgetAmount = @BudgetAmount, 
-                    Period = @Period
+                    Period = @Period,
+                    Currency = @Currency
                 WHERE Id = @Id;";
 
             using var command = new SQLiteCommand(query, connection);
@@ -97,11 +122,12 @@ namespace PersonalFinanceTracker.Services
             command.Parameters.AddWithValue("@Category", budget.Category);
             command.Parameters.AddWithValue("@BudgetAmount", budget.BudgetAmount);
             command.Parameters.AddWithValue("@Period", budget.Period);
+            command.Parameters.AddWithValue("@Currency", budget.Currency);
 
             command.ExecuteNonQuery();
         }
 
-        // DELETE - Remove budget
+        // DELETE
         public void Delete(int id)
         {
             using var connection = DatabaseHelper.GetConnection();

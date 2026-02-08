@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,8 @@ namespace PersonalFinanceTracker.Views
     {
         private readonly CategoryRepository _categoryRepository;
         private readonly BudgetRepository _budgetRepository;
+        private readonly CurrencyService _currencyService;
+        private readonly SettingsRepository _settingsRepository;
         private Budget? _budget;
         private bool _isEditMode;
 
@@ -24,9 +27,12 @@ namespace PersonalFinanceTracker.Views
             InitializeComponent();
             _categoryRepository = new CategoryRepository();
             _budgetRepository = new BudgetRepository();
+            _currencyService = new CurrencyService();
+            _settingsRepository = new SettingsRepository();
             _isEditMode = false;
 
             LoadExpenseCategories();
+            LoadCurrencies();
         }
 
         // Constructor for EDIT mode
@@ -48,6 +54,10 @@ namespace PersonalFinanceTracker.Views
                 _ => 0
             };
 
+            // Select currency
+            var budgetCurrency = _currencyService.GetCurrency(budget.Currency);
+            CurrencyComboBox.SelectedItem = budgetCurrency;
+
             // Select category
             var categoryToSelect = CategoryComboBox.Items.Cast<Category>()
                 .FirstOrDefault(c => c.Name == budget.Category);
@@ -56,12 +66,7 @@ namespace PersonalFinanceTracker.Views
                 CategoryComboBox.SelectedItem = categoryToSelect;
             }
         }
-        private void BudgetAmountTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            // Allow only numbers and decimal point
-            Regex regex = new Regex(@"^[0-9.]+$");
-            e.Handled = !regex.IsMatch(e.Text);
-        }
+
         private void LoadExpenseCategories()
         {
             CategoryComboBox.Items.Clear();
@@ -74,6 +79,23 @@ namespace PersonalFinanceTracker.Views
             {
                 CategoryComboBox.SelectedIndex = 0;
             }
+        }
+
+        private void LoadCurrencies()
+        {
+            var currencies = _currencyService.GetAllCurrencies();
+            CurrencyComboBox.ItemsSource = currencies;
+
+            // Default to user's preferred currency
+            var settings = _settingsRepository.GetSettings();
+            var defaultCurrency = _currencyService.GetCurrency(settings.SelectedCurrency);
+            CurrencyComboBox.SelectedItem = defaultCurrency;
+        }
+
+        private void BudgetAmountTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex(@"^[0-9.]+$");
+            e.Handled = !regex.IsMatch(e.Text);
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -112,10 +134,21 @@ namespace PersonalFinanceTracker.Views
                 return;
             }
 
+            if (CurrencyComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a currency.",
+                    "Validation Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                CurrencyComboBox.Focus();
+                return;
+            }
+
             try
             {
                 var selectedCategory = (Category)CategoryComboBox.SelectedItem;
                 var selectedPeriod = ((ComboBoxItem)PeriodComboBox.SelectedItem).Content.ToString() ?? "Monthly";
+                var selectedCurrency = (Currency)CurrencyComboBox.SelectedItem;
 
                 // Check if budget already exists for this category
                 if (!_isEditMode)
@@ -138,6 +171,7 @@ namespace PersonalFinanceTracker.Views
                     _budget.Category = selectedCategory.Name;
                     _budget.BudgetAmount = amount;
                     _budget.Period = selectedPeriod;
+                    _budget.Currency = selectedCurrency.Code;
 
                     _budgetRepository.Update(_budget);
                 }
@@ -148,7 +182,8 @@ namespace PersonalFinanceTracker.Views
                     {
                         Category = selectedCategory.Name,
                         BudgetAmount = amount,
-                        Period = selectedPeriod
+                        Period = selectedPeriod,
+                        Currency = selectedCurrency.Code
                     };
 
                     _budgetRepository.Add(newBudget);
