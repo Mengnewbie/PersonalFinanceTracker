@@ -7,11 +7,14 @@
     <UserControl.DataContext>
         <viewmodels:TransactionsViewModel />
     </UserControl.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -23,13 +26,12 @@
                    Margin="0,0,0,20"/>
 
         <!-- Action Buttons -->
-        <!-- Action Buttons -->
         <StackPanel Grid.Row="1" 
                     Orientation="Horizontal" 
                     Margin="0,0,0,15">
             <Button Content="➕ Add Transaction" 
-                Command="{Binding AddCommand}"
-                    ToolTip="Add a new transaction (Ctrl+N)"
+                    Command="{Binding AddCommand}"
+                    ToolTip="Add a new transaction"
                     Background="#27AE60" 
                     Foreground="White"
                     Padding="15,10"
@@ -75,14 +77,15 @@
 
             <Button Content="🗑️ Delete" 
                     Command="{Binding DeleteCommand}"
-                    ToolTip="Delete selected transaction (Del)"
+                    ToolTip="Delete selected transaction"
                     Background="#E74C3C" 
                     Foreground="White"
                     Padding="15,10"
                     FontSize="14"
                     FontWeight="SemiBold"
                     BorderThickness="0"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    Margin="0,0,10,0">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#E74C3C"/>
@@ -94,12 +97,179 @@
                     </Style>
                 </Button.Style>
             </Button>
+
+            <Separator Width="20" Background="Transparent"/>
+
+            <Button Content="🔄 Clear Filters" 
+                    Command="{Binding ClearFiltersCommand}"
+                    ToolTip="Reset all filters"
+                    Background="#95A5A6" 
+                    Foreground="White"
+                    Padding="15,10"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    BorderThickness="0"
+                    Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#95A5A6"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#7F8C8D"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
 
+        <!-- Filters Section -->
+        <Border Grid.Row="2"
+                Background="#F8F9FA"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="15"
+                Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- First Row of Filters -->
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Search Box -->
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="Search" 
+                                   FontSize="11" 
+                                   Foreground="#7F8C8D"
+                                   Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="35"
+                                 Padding="10,8"
+                                 FontSize="13"
+                                 VerticalContentAlignment="Center"
+                                 BorderBrush="#BDC3C7"
+                                 BorderThickness="1">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderBrush" Value="#3498DB"/>
+                                        </Trigger>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter Property="BorderBrush" Value="#3498DB"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </StackPanel>
+
+                    <!-- Type Filter -->
+                    <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                        <TextBlock Text="Type" 
+                                   FontSize="11" 
+                                   Foreground="#7F8C8D"
+                                   Margin="0,0,0,5"/>
+                        <ComboBox ItemsSource="{Binding TypeFilters}"
+                                  SelectedItem="{Binding SelectedTypeFilter}"
+                                  Height="35"
+                                  Padding="10,5"
+                                  FontSize="13"
+                                  BorderBrush="#BDC3C7"/>
+                    </StackPanel>
+
+                    <!-- Category Filter -->
+                    <StackPanel Grid.Column="2" Margin="5,0,5,0">
+                        <TextBlock Text="Category" 
+                                   FontSize="11" 
+                                   Foreground="#7F8C8D"
+                                   Margin="0,0,0,5"/>
+                        <ComboBox ItemsSource="{Binding CategoryFilters}"
+                                  SelectedItem="{Binding SelectedCategoryFilter}"
+                                  Height="35"
+                                  Padding="10,5"
+                                  FontSize="13"
+                                  BorderBrush="#BDC3C7"/>
+                    </StackPanel>
+
+                    <!-- Sort Options -->
+                    <StackPanel Grid.Column="3" Margin="10,0,0,0">
+                        <TextBlock Text="Sort By" 
+                                   FontSize="11" 
+                                   Foreground="#7F8C8D"
+                                   Margin="0,0,0,5"/>
+                        <ComboBox ItemsSource="{Binding SortOptions}"
+                                  SelectedItem="{Binding SelectedSortOption}"
+                                  Height="35"
+                                  Padding="10,5"
+                                  FontSize="13"
+                                  BorderBrush="#BDC3C7"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Second Row of Filters (Date Range) -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Start Date -->
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="From Date" 
+                                   FontSize="11" 
+                                   Foreground="#7F8C8D"
+                                   Margin="0,0,0,5"/>
+                        <DatePicker SelectedDate="{Binding StartDate}"
+                                    Height="35"
+                                    Padding="10,5"
+                                    FontSize="13"
+                                    BorderBrush="#BDC3C7"/>
+                    </StackPanel>
+
+                    <!-- End Date -->
+                    <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                        <TextBlock Text="To Date" 
+                                   FontSize="11" 
+                                   Foreground="#7F8C8D"
+                                   Margin="0,0,0,5"/>
+                        <DatePicker SelectedDate="{Binding EndDate}"
+                                    Height="35"
+                                    Padding="10,5"
+                                    FontSize="13"
+                                    BorderBrush="#BDC3C7"/>
+                    </StackPanel>
+
+                    <!-- Filter Info -->
+                    <StackPanel Grid.Column="2" 
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Bottom">
+                        <TextBlock FontSize="12" Foreground="#7F8C8D" TextWrapping="Wrap">
+                            <Run Text="Showing "/>
+                            <Run Text="{Binding DisplayedCount, Mode=OneWay}" FontWeight="Bold" Foreground="#2C3E50"/>
+                            <Run Text=" of "/>
+                            <Run Text="{Binding TotalCount, Mode=OneWay}" FontWeight="Bold" Foreground="#2C3E50"/>
+                            <Run Text=" transactions"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
         <!-- DataGrid -->
-        <DataGrid Grid.Row="2"
-                  x:Name="TransactionsDataGrid"
-                  ItemsSource="{Binding Transactions}"
+        <DataGrid Grid.Row="3"
+                  ItemsSource="{Binding FilteredTransactions}"
                   SelectedItem="{Binding SelectedTransaction}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
@@ -118,11 +288,24 @@
 
                 <DataGridTextColumn Header="Date" 
                                     Binding="{Binding Date, StringFormat='MMM dd, yyyy'}" 
-                                    Width="120"/>
+                                    Width="120">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
 
                 <DataGridTextColumn Header="Description" 
                                     Binding="{Binding Description}" 
-                                    Width="*"/>
+                                    Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Padding" Value="5,0,0,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
 
                 <DataGridTextColumn Header="Category" 
                                     Binding="{Binding Category}" 
@@ -130,7 +313,22 @@
 
                 <DataGridTextColumn Header="Type" 
                                     Binding="{Binding Type}" 
-                                    Width="100"/>
+                                    Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="Income">
+                                    <Setter Property="Foreground" Value="#27AE60"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="Expense">
+                                    <Setter Property="Foreground" Value="#E74C3C"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
 
                 <DataGridTextColumn Header="Amount" 
                                     Binding="{Binding Amount, StringFormat=C}" 
@@ -138,7 +336,16 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Right"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="Income">
+                                    <Setter Property="Foreground" Value="#27AE60"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="Expense">
+                                    <Setter Property="Foreground" Value="#E74C3C"/>
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -150,38 +357,127 @@
                     <Setter Property="Background" Value="#34495E"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="FontSize" Value="13"/>
+                    <Setter Property="Padding" Value="12,10"/>
                     <Setter Property="BorderThickness" Value="0,0,1,0"/>
                     <Setter Property="BorderBrush" Value="#2C3E50"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
-                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Height" Value="45"/>
+                    <Setter Property="Cursor" Value="Hand"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#ECF0F1"/>
+                            <Setter Property="Background" Value="#E8F8F5"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#D6EAF8"/>
+                            <Setter Property="BorderBrush" Value="#3498DB"/>
+                            <Setter Property="BorderThickness" Value="2,0,2,0"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
 
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="10,0"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Self}}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+
+            <!-- Double-click to edit -->
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" 
+                              Command="{Binding RowDoubleClickCommand}"/>
+            </DataGrid.InputBindings>
+
         </DataGrid>
+
+        <!-- Summary Footer -->
+        <Border Grid.Row="4"
+                Background="#34495E"
+                Padding="20,12"
+                Margin="0,0,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           FontSize="13"
+                           Text="💡 Tip: Double-click any row to edit"/>
+
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal"
+                            Margin="0,0,30,0">
+                    <TextBlock Text="Income: "
+                               Foreground="#BDC3C7"
+                               FontSize="13"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding DisplayedIncome, StringFormat=C, Mode=OneWay}"
+                               Foreground="#27AE60"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal"
+                            Margin="0,0,30,0">
+                    <TextBlock Text="Expenses: "
+                               Foreground="#BDC3C7"
+                               FontSize="13"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding DisplayedExpenses, StringFormat=C, Mode=OneWay}"
+                               Foreground="#E74C3C"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" 
+                            Orientation="Horizontal">
+                    <TextBlock Text="Balance: "
+                               Foreground="#BDC3C7"
+                               FontSize="13"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding DisplayedBalance, StringFormat=C, Mode=OneWay}"
+                               Foreground="#3498DB"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <!-- Empty State Message -->
-        <Border Grid.Row="2"
-        Background="#F8F9FA"
-        CornerRadius="8"
-        Padding="40"
-        VerticalAlignment="Center">
+        <Border Grid.Row="3"
+                Background="#F8F9FA"
+                CornerRadius="8"
+                Padding="40"
+                VerticalAlignment="Center"
+                Panel.ZIndex="1">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Transactions.Count}" Value="0">
+                        <DataTrigger Binding="{Binding DisplayedCount}" Value="0">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -190,20 +486,21 @@
 
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Text="📝" 
-                   FontSize="64"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,20"/>
-                <TextBlock Text="No Transactions Yet" 
-                   FontSize="24"
-                   FontWeight="SemiBold"
-                   Foreground="#7F8C8D"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,10"/>
-                <TextBlock Text="Click the 'Add Transaction' button to get started!" 
-                   FontSize="14"
-                   Foreground="#95A5A6"
-                   HorizontalAlignment="Center"/>
+                           FontSize="64"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
+                <TextBlock Text="No Transactions Found" 
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="#7F8C8D"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,10"/>
+                <TextBlock Text="Try adjusting your filters or add a new transaction!" 
+                           FontSize="14"
+                           Foreground="#95A5A6"
+                           HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
+
     </Grid>
 </UserControl>
