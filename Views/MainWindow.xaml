@@ -32,27 +32,47 @@
 
         <!-- TOP BAR -->
         <Border Grid.Row="0" 
-                Background="#2C3E50" 
-                Padding="20,0">
+        Background="#2C3E50" 
+        Padding="20,0">
             <Grid>
                 <TextBlock Text="Personal Finance Tracker" 
-                           Foreground="White" 
-                           FontSize="22" 
-                           FontWeight="Bold"
-                           VerticalAlignment="Center"/>
+                   Foreground="White" 
+                   FontSize="22" 
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"/>
 
                 <StackPanel Orientation="Horizontal" 
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                    <Button Content="⚙️ Settings"
+                    Click="SettingsButton_Click"
+                    Background="Transparent"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Padding="15,8"
+                    FontSize="14"
+                    Cursor="Hand"
+                    Margin="0,0,15,0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#34495E"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
                     <TextBlock Text="Welcome, User" 
-                               Foreground="White" 
-                               FontSize="14"
-                               VerticalAlignment="Center"
-                               Margin="0,0,10,0"/>
+                       Foreground="White" 
+                       FontSize="14"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"/>
                 </StackPanel>
             </Grid>
         </Border>
-
         <!-- MAIN CONTENT AREA -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

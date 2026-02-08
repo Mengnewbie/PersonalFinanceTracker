@@ -48,7 +48,7 @@
                                    Opacity="0.9"
                                    Margin="0,0,0,5"/>
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding TotalIncome, StringFormat=C}" 
+                                   Text="{Binding TotalIncomeFormatted}" 
                                    Foreground="White" 
                                    FontSize="32"
                                    FontWeight="Bold"
@@ -80,13 +80,13 @@
                                    Opacity="0.9"
                                    Margin="0,0,0,5"/>
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding TotalExpenses, StringFormat=C}" 
+                                   Text="{Binding TotalExpensesFormatted}" 
                                    Foreground="White" 
                                    FontSize="32"
                                    FontWeight="Bold"
                                    Margin="0,0,0,10"/>
                         <TextBlock Grid.Row="2"
-                                   Text="{Binding ExpenseChange}"
+                                   Text="{Binding ExpenseChange, Converter={StaticResource CurrencyConverter}}"
                                    Foreground="White"
                                    FontSize="12"
                                    Opacity="0.8"/>
@@ -112,7 +112,7 @@
                                    Opacity="0.9"
                                    Margin="0,0,0,5"/>
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding Balance, StringFormat=C}" 
+                                   Text="{Binding BalanceFormatted}" 
                                    Foreground="White" 
                                    FontSize="32"
                                    FontWeight="Bold"
@@ -193,7 +193,7 @@
                                            FontSize="11"
                                            Foreground="#16A085"
                                            Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding AverageTransaction, StringFormat=C}"
+                                <TextBlock Text="{Binding AverageTransactionFormatted}"
                                            FontSize="20"
                                            FontWeight="Bold"
                                            Foreground="#16A085"/>
@@ -209,7 +209,7 @@
                                            FontSize="11"
                                            Foreground="#C0392B"
                                            Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding LargestExpense, StringFormat=C}"
+                                <TextBlock Text="{Binding LargestExpenseFormatted}"
                                            FontSize="20"
                                            FontWeight="Bold"
                                            Foreground="#C0392B"/>
@@ -229,7 +229,7 @@
                                                FontSize="16"
                                                Foreground="#27AE60"
                                                Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding ThisMonthIncome, StringFormat=C}"
+                                    <TextBlock Text="{Binding ThisMonthIncomeFormatted}"
                                                FontSize="14"
                                                FontWeight="SemiBold"
                                                Foreground="#27AE60"/>
@@ -239,7 +239,7 @@
                                                FontSize="16"
                                                Foreground="#E74C3C"
                                                Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding ThisMonthExpenses, StringFormat=C}"
+                                    <TextBlock Text="{Binding ThisMonthExpensesFormatted}"
                                                FontSize="14"
                                                FontWeight="SemiBold"
                                                Foreground="#E74C3C"/>
@@ -382,7 +382,7 @@
                                                                Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </StackPanel>
-                                            <TextBlock Text="{Binding Amount, StringFormat=C}"
+                                            <TextBlock Text="{Binding AmountFormatted}"
                                                        FontSize="15"
                                                        FontWeight="Bold"
                                                        Foreground="#E74C3C"
