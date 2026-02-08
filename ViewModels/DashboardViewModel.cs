@@ -8,6 +8,7 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Services;
+using PersonalFinanceTracker.Helpers;
 
 namespace PersonalFinanceTracker.ViewModels
 {
@@ -44,48 +45,104 @@ namespace PersonalFinanceTracker.ViewModels
         private ISeries[] _monthlyTrendSeries;
         private Axis[] _monthlyTrendXAxes;
 
-        // Properties
+        // Properties with Formatted Versions
         public decimal TotalIncome
         {
             get => _totalIncome;
-            set => SetProperty(ref _totalIncome, value);
+            set
+            {
+                if (SetProperty(ref _totalIncome, value))
+                {
+                    OnPropertyChanged(nameof(TotalIncomeFormatted));
+                }
+            }
         }
+
+        public string TotalIncomeFormatted => CurrencyFormatter.Format(TotalIncome);
 
         public decimal TotalExpenses
         {
             get => _totalExpenses;
-            set => SetProperty(ref _totalExpenses, value);
+            set
+            {
+                if (SetProperty(ref _totalExpenses, value))
+                {
+                    OnPropertyChanged(nameof(TotalExpensesFormatted));
+                }
+            }
         }
+
+        public string TotalExpensesFormatted => CurrencyFormatter.Format(TotalExpenses);
 
         public decimal Balance
         {
             get => _balance;
-            set => SetProperty(ref _balance, value);
+            set
+            {
+                if (SetProperty(ref _balance, value))
+                {
+                    OnPropertyChanged(nameof(BalanceFormatted));
+                }
+            }
         }
+
+        public string BalanceFormatted => CurrencyFormatter.Format(Balance);
 
         public decimal ThisMonthIncome
         {
             get => _thisMonthIncome;
-            set => SetProperty(ref _thisMonthIncome, value);
+            set
+            {
+                if (SetProperty(ref _thisMonthIncome, value))
+                {
+                    OnPropertyChanged(nameof(ThisMonthIncomeFormatted));
+                }
+            }
         }
+
+        public string ThisMonthIncomeFormatted => CurrencyFormatter.Format(ThisMonthIncome);
 
         public decimal ThisMonthExpenses
         {
             get => _thisMonthExpenses;
-            set => SetProperty(ref _thisMonthExpenses, value);
+            set
+            {
+                if (SetProperty(ref _thisMonthExpenses, value))
+                {
+                    OnPropertyChanged(nameof(ThisMonthExpensesFormatted));
+                }
+            }
         }
+
+        public string ThisMonthExpensesFormatted => CurrencyFormatter.Format(ThisMonthExpenses);
 
         public decimal LastMonthIncome
         {
             get => _lastMonthIncome;
-            set => SetProperty(ref _lastMonthIncome, value);
+            set
+            {
+                if (SetProperty(ref _lastMonthIncome, value))
+                {
+                    OnPropertyChanged(nameof(LastMonthIncomeFormatted));
+                }
+            }
         }
+
+        public string LastMonthIncomeFormatted => CurrencyFormatter.Format(LastMonthIncome);
 
         public decimal LastMonthExpenses
         {
             get => _lastMonthExpenses;
-            set => SetProperty(ref _lastMonthExpenses, value);
+            set
+            {
+                if (SetProperty(ref _lastMonthExpenses, value))
+                {
+                    OnPropertyChanged(nameof(LastMonthExpensesFormatted));
+                }
+            }
         }
+
+        public string LastMonthExpensesFormatted => CurrencyFormatter.Format(LastMonthExpenses);
 
         public string IncomeChange
         {
@@ -150,14 +207,30 @@ namespace PersonalFinanceTracker.ViewModels
         public decimal AverageTransaction
         {
             get => _averageTransaction;
-            set => SetProperty(ref _averageTransaction, value);
+            set
+            {
+                if (SetProperty(ref _averageTransaction, value))
+                {
+                    OnPropertyChanged(nameof(AverageTransactionFormatted));
+                }
+            }
         }
+
+        public string AverageTransactionFormatted => CurrencyFormatter.Format(AverageTransaction);
 
         public decimal LargestExpense
         {
             get => _largestExpense;
-            set => SetProperty(ref _largestExpense, value);
+            set
+            {
+                if (SetProperty(ref _largestExpense, value))
+                {
+                    OnPropertyChanged(nameof(LargestExpenseFormatted));
+                }
+            }
         }
+
+        public string LargestExpenseFormatted => CurrencyFormatter.Format(LargestExpense);
 
         public int TransactionCount
         {
@@ -445,6 +518,23 @@ namespace PersonalFinanceTracker.ViewModels
         public void RefreshData()
         {
             LoadData();
+
+            // Force UI to refresh all formatted properties
+            OnPropertyChanged(nameof(TotalIncomeFormatted));
+            OnPropertyChanged(nameof(TotalExpensesFormatted));
+            OnPropertyChanged(nameof(BalanceFormatted));
+            OnPropertyChanged(nameof(ThisMonthIncomeFormatted));
+            OnPropertyChanged(nameof(ThisMonthExpensesFormatted));
+            OnPropertyChanged(nameof(LastMonthIncomeFormatted));
+            OnPropertyChanged(nameof(LastMonthExpensesFormatted));
+            OnPropertyChanged(nameof(AverageTransactionFormatted));
+            OnPropertyChanged(nameof(LargestExpenseFormatted));
+
+            // Refresh top categories
+            foreach (var category in TopCategories)
+            {
+                category.RefreshFormatting();
+            }
         }
     }
 
@@ -466,8 +556,16 @@ namespace PersonalFinanceTracker.ViewModels
         public decimal Amount
         {
             get => _amount;
-            set => SetProperty(ref _amount, value);
+            set
+            {
+                if (SetProperty(ref _amount, value))
+                {
+                    OnPropertyChanged(nameof(AmountFormatted));
+                }
+            }
         }
+
+        public string AmountFormatted => CurrencyFormatter.Format(Amount);
 
         public int TransactionCount
         {
@@ -485,6 +583,10 @@ namespace PersonalFinanceTracker.ViewModels
         {
             get => _color;
             set => SetProperty(ref _color, value);
+        }
+        public void RefreshFormatting()
+        {
+            OnPropertyChanged(nameof(AmountFormatted));
         }
     }
 }

@@ -66,6 +66,13 @@ namespace PersonalFinanceTracker.Helpers
                     Period TEXT NOT NULL
                 );";
 
+            string createSettingsTable = @"
+                CREATE TABLE IF NOT EXISTS Settings (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    SelectedCurrency TEXT NOT NULL DEFAULT 'USD',
+                    BaseCurrency TEXT NOT NULL DEFAULT 'USD'
+                );";
+
             using (var command = new SQLiteCommand(createCategoriesTable, connection))
             {
                 command.ExecuteNonQuery();
@@ -79,6 +86,28 @@ namespace PersonalFinanceTracker.Helpers
             using (var command = new SQLiteCommand(createBudgetsTable, connection))
             {
                 command.ExecuteNonQuery();
+            }
+
+            using (var command = new SQLiteCommand(createSettingsTable, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+
+            // Initialize default settings
+            InitializeSettings(connection);
+        }
+
+        private static void InitializeSettings(SQLiteConnection connection)
+        {
+            string checkQuery = "SELECT COUNT(*) FROM Settings;";
+            using var checkCommand = new SQLiteCommand(checkQuery, connection);
+            long count = (long)checkCommand.ExecuteScalar();
+
+            if (count == 0)
+            {
+                string insertQuery = "INSERT INTO Settings (SelectedCurrency, BaseCurrency) VALUES ('USD', 'USD');";
+                using var insertCommand = new SQLiteCommand(insertQuery, connection);
+                insertCommand.ExecuteNonQuery();
             }
         }
 
