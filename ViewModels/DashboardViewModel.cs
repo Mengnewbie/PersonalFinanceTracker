@@ -30,7 +30,7 @@ namespace PersonalFinanceTracker.ViewModels
         private string _incomeChangeColor;
         private string _expenseChangeColor;
 
-        private ObservableCollection<Transaction> _recentTransactions;
+        private ObservableCollection<TransactionDisplayItem> _recentTransactions;
         private ObservableCollection<CategorySpendingItem> _topCategories;
 
         private int _budgetsOnTrack;
@@ -168,7 +168,7 @@ namespace PersonalFinanceTracker.ViewModels
             set => SetProperty(ref _expenseChangeColor, value);
         }
 
-        public ObservableCollection<Transaction> RecentTransactions
+        public ObservableCollection<TransactionDisplayItem> RecentTransactions
         {
             get => _recentTransactions;
             set => SetProperty(ref _recentTransactions, value);
@@ -256,7 +256,7 @@ namespace PersonalFinanceTracker.ViewModels
             _budgetRepository = new BudgetRepository();
             _categoryRepository = new CategoryRepository();
 
-            _recentTransactions = new ObservableCollection<Transaction>();
+            _recentTransactions = new ObservableCollection<TransactionDisplayItem>();
             _topCategories = new ObservableCollection<CategorySpendingItem>();
             _monthlyTrendSeries = Array.Empty<ISeries>();
             _monthlyTrendXAxes = Array.Empty<Axis>();
@@ -355,7 +355,15 @@ namespace PersonalFinanceTracker.ViewModels
 
             foreach (var transaction in transactions)
             {
-                RecentTransactions.Add(transaction);
+                RecentTransactions.Add(new TransactionDisplayItem
+                {
+                    Description = transaction.Description,
+                    Category = transaction.Category,
+                    Type = transaction.Type,
+                    OriginalAmount = transaction.Amount,
+                    OriginalCurrency = transaction.Currency,
+                    Date = transaction.Date
+                });
             }
         }
 
@@ -530,11 +538,16 @@ namespace PersonalFinanceTracker.ViewModels
             OnPropertyChanged(nameof(AverageTransactionFormatted));
             OnPropertyChanged(nameof(LargestExpenseFormatted));
 
-
             // Refresh top categories
             foreach (var category in TopCategories)
             {
                 category.RefreshFormatting();
+            }
+
+            // Refresh recent transactions (they auto-convert based on current settings)
+            foreach (var transaction in RecentTransactions)
+            {
+                transaction.RefreshDisplay();
             }
         }
     }
@@ -588,6 +601,105 @@ namespace PersonalFinanceTracker.ViewModels
         public void RefreshFormatting()
         {
             OnPropertyChanged(nameof(AmountFormatted));
+        }
+    }
+    // Helper class for displaying transactions with currency conversion
+    // Helper class for displaying transactions with currency conversion
+    // Helper class for displaying transactions with currency conversion
+    public class TransactionDisplayItem : BaseViewModel
+    {
+        private readonly CurrencyService _currencyService;
+        private readonly SettingsRepository _settingsRepository;
+
+        private string _description = string.Empty;
+        private string _category = string.Empty;
+        private string _type = string.Empty;
+        private decimal _originalAmount;
+        private string _originalCurrency = string.Empty;
+        private DateTime _date;
+
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
+        public string Category
+        {
+            get => _category;
+            set => SetProperty(ref _category, value);
+        }
+
+        public string Type
+        {
+            get => _type;
+            set => SetProperty(ref _type, value);
+        }
+
+        public decimal OriginalAmount
+        {
+            get => _originalAmount;
+            set
+            {
+                if (SetProperty(ref _originalAmount, value))
+                {
+                    OnPropertyChanged(nameof(DisplayAmount));
+                }
+            }
+        }
+
+        public string OriginalCurrency
+        {
+            get => _originalCurrency;
+            set
+            {
+                if (SetProperty(ref _originalCurrency, value))
+                {
+                    OnPropertyChanged(nameof(DisplayAmount));
+                }
+            }
+        }
+
+        public DateTime Date
+        {
+            get => _date;
+            set => SetProperty(ref _date, value);
+        }
+
+        // This converts the original amount to the user's display currency
+        public string DisplayAmount
+        {
+            get
+            {
+                try
+                {
+                    var settings = _settingsRepository.GetSettings();
+
+                    // Convert from original currency to display currency
+                    var convertedAmount = _currencyService.Convert(
+                        OriginalAmount,
+                        OriginalCurrency,
+                        settings.SelectedCurrency);
+
+                    return _currencyService.FormatAmount(convertedAmount, settings.SelectedCurrency);
+                }
+                catch
+                {
+                    return $"${OriginalAmount:N2}";
+                }
+            }
+        }
+
+        public TransactionDisplayItem()
+        {
+            _currencyService = new CurrencyService();
+            _settingsRepository = new SettingsRepository();
+        }
+
+        // PUBLIC method to refresh display when currency changes
+        public void RefreshDisplay()
+        {
+            OnPropertyChanged(nameof(DisplayAmount));
         }
     }
 }

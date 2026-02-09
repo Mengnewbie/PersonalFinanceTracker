@@ -13,8 +13,8 @@ namespace PersonalFinanceTracker.ViewModels
 {
     public class TransactionsViewModel : BaseViewModel
     {
-        private readonly TransactionRepository _transactionRepository;
-        private readonly CategoryRepository _categoryRepository;
+        private TransactionRepository _transactionRepository;
+        private CategoryRepository _categoryRepository;
 
         private ObservableCollection<Transaction> _transactions;
         private ObservableCollection<Transaction> _filteredTransactions;
