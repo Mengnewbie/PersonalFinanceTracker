@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Add Budget" 
-        Height="400" 
-        Width="500"
+        Height="487" 
+        Width="733"
         WindowStartupLocation="CenterOwner"
         Background="#F5F5F5"
         ResizeMode="NoResize">

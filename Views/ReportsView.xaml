@@ -67,7 +67,7 @@
                                    FontSize="12"
                                    Opacity="0.9"
                                    Margin="0,0,0,5"/>
-                        <TextBlock Text="{Binding TotalIncome, StringFormat=C}"
+                        <TextBlock Text="{Binding TotalIncomeFormatted}"
                                    Foreground="White"
                                    FontSize="24"
                                    FontWeight="Bold"
@@ -91,11 +91,11 @@
                                    FontSize="12"
                                    Opacity="0.9"
                                    Margin="0,0,0,5"/>
-                        <TextBlock Text="{Binding TotalExpenses, StringFormat=C}"
+                        <TextBlock Text="{Binding TotalExpensesFormatted}"
                                    Foreground="White"
                                    FontSize="24"
                                    FontWeight="Bold"
-                                   Margin="0,0,0,5"/>
+                                   Margin="0,0,0,5"/>   
                         <TextBlock Text="{Binding ExpenseTransactions, StringFormat={}{0} transactions}"
                                    Foreground="White"
                                    FontSize="11"
@@ -115,7 +115,7 @@
                                    FontSize="12"
                                    Opacity="0.9"
                                    Margin="0,0,0,5"/>
-                        <TextBlock Text="{Binding NetSavings, StringFormat=C}"
+                        <TextBlock Text="{Binding NetSavingsFormatted}"
                                    Foreground="White"
                                    FontSize="24"
                                    FontWeight="Bold"
@@ -139,7 +139,7 @@
                                    FontSize="12"
                                    Opacity="0.9"
                                    Margin="0,0,0,5"/>
-                        <TextBlock Text="{Binding DailyAverage, StringFormat=C}"
+                        <TextBlock Text="{Binding DailyAverageFormatted}"
                                    Foreground="White"
                                    FontSize="24"
                                    FontWeight="Bold"
@@ -418,7 +418,7 @@
 
                                                     <StackPanel HorizontalAlignment="Right"
                                                                 VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Total, StringFormat=C}"
+                                                        <TextBlock Text="{Binding TotalFormatted}"
                                                                    FontSize="16"
                                                                    FontWeight="Bold"
                                                                    Foreground="#E74C3C"

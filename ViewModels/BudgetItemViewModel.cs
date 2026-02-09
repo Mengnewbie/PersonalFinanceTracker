@@ -1,9 +1,14 @@
-﻿namespace PersonalFinanceTracker.ViewModels
+﻿using PersonalFinanceTracker.Helpers;
+using PersonalFinanceTracker.Services;
+
+namespace PersonalFinanceTracker.ViewModels
 {
     public class BudgetItemViewModel : BaseViewModel
     {
+        private readonly CurrencyService _currencyService;
         private string _category;
         private decimal _budgetAmount;
+        private string _budgetCurrency;
         private decimal _spent;
         private decimal _remaining;
         private double _progressPercentage;
@@ -21,7 +26,28 @@
         public decimal BudgetAmount
         {
             get => _budgetAmount;
-            set => SetProperty(ref _budgetAmount, value);
+            set
+            {
+                if (SetProperty(ref _budgetAmount, value))
+                {
+                    CalculateProgress();
+                    OnPropertyChanged(nameof(BudgetAmountFormatted));
+                }
+            }
+        }
+
+        public string BudgetCurrency
+        {
+            get => _budgetCurrency;
+            set
+            {
+                if (SetProperty(ref _budgetCurrency, value))
+                {
+                    OnPropertyChanged(nameof(BudgetAmountFormatted));
+                    OnPropertyChanged(nameof(SpentFormatted));
+                    OnPropertyChanged(nameof(RemainingFormatted));
+                }
+            }
         }
 
         public decimal Spent
@@ -29,15 +55,24 @@
             get => _spent;
             set
             {
-                SetProperty(ref _spent, value);
-                CalculateProgress();
+                if (SetProperty(ref _spent, value))
+                {
+                    CalculateProgress();
+                    OnPropertyChanged(nameof(SpentFormatted));
+                }
             }
         }
 
         public decimal Remaining
         {
             get => _remaining;
-            set => SetProperty(ref _remaining, value);
+            set
+            {
+                if (SetProperty(ref _remaining, value))
+                {
+                    OnPropertyChanged(nameof(RemainingFormatted));
+                }
+            }
         }
 
         public double ProgressPercentage
@@ -70,12 +105,35 @@
             set => SetProperty(ref _budgetId, value);
         }
 
-        public BudgetItemViewModel()
+        // Formatted properties
+        public string BudgetAmountFormatted => FormatCurrency(BudgetAmount);
+        public string SpentFormatted => FormatCurrency(Spent);
+        public string RemainingFormatted => FormatCurrency(Remaining);
+
+        public BudgetItemViewModel(CurrencyService currencyService)
         {
+            _currencyService = currencyService;
             _category = string.Empty;
+            _budgetCurrency = "USD";
             _statusColor = "#27AE60";
             _statusText = "On Track";
             _icon = "📊";
+        }
+
+        private string FormatCurrency(decimal amount)
+        {
+            if (_currencyService == null) return $"${amount:N2}";
+
+            var currency = _currencyService.GetCurrency(BudgetCurrency);
+
+            // Special formatting for currencies without decimals
+            if (BudgetCurrency == "JPY" || BudgetCurrency == "KRW" ||
+                BudgetCurrency == "VND" || BudgetCurrency == "KHR")
+            {
+                return $"{currency.Symbol}{amount:N0}";
+            }
+
+            return $"{currency.Symbol}{amount:N2}";
         }
 
         private void CalculateProgress()
@@ -107,6 +165,13 @@
             {
                 ProgressPercentage = 0;
             }
+        }
+
+        public void RefreshFormatting()
+        {
+            OnPropertyChanged(nameof(BudgetAmountFormatted));
+            OnPropertyChanged(nameof(SpentFormatted));
+            OnPropertyChanged(nameof(RemainingFormatted));
         }
     }
 }

@@ -530,6 +530,7 @@ namespace PersonalFinanceTracker.ViewModels
             OnPropertyChanged(nameof(AverageTransactionFormatted));
             OnPropertyChanged(nameof(LargestExpenseFormatted));
 
+
             // Refresh top categories
             foreach (var category in TopCategories)
             {

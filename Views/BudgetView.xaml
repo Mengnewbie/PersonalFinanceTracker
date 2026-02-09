@@ -241,35 +241,35 @@
 
                                 <StackPanel Grid.Column="0">
                                     <TextBlock Text="Budget" 
-                                       FontSize="11"
-                                       Foreground="#7F8C8D"
-                                       Margin="0,0,0,3"/>
-                                    <TextBlock Text="{Binding BudgetAmount, StringFormat=C}"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"
-                                       Foreground="#2C3E50"/>
+                                               FontSize="11"
+                                               Foreground="#7F8C8D"
+                                               Margin="0,0,0,3"/>
+                                    <TextBlock Text="{Binding BudgetAmountFormatted}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Foreground="#2C3E50"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1">
                                     <TextBlock Text="Spent" 
-                                       FontSize="11"
-                                       Foreground="#7F8C8D"
-                                       Margin="0,0,0,3"/>
-                                    <TextBlock Text="{Binding Spent, StringFormat=C}"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"
-                                       Foreground="#E74C3C"/>
+                                               FontSize="11"
+                                               Foreground="#7F8C8D"
+                                               Margin="0,0,0,3"/>
+                                    <TextBlock Text="{Binding SpentFormatted}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Foreground="#E74C3C"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="Remaining" 
-                                       FontSize="11"
-                                       Foreground="#7F8C8D"
-                                       Margin="0,0,0,3"/>
-                                    <TextBlock Text="{Binding Remaining, StringFormat=C}"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"
-                                       Foreground="#27AE60"/>
+                                               FontSize="11"
+                                               Foreground="#7F8C8D"
+                                               Margin="0,0,0,3"/>
+                                    <TextBlock Text="{Binding RemainingFormatted}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Foreground="#27AE60"/>
                                 </StackPanel>
                             </Grid>
 
