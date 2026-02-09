@@ -6,6 +6,7 @@ using System.Windows.Input;
 using PersonalFinanceTracker.Commands;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Services;
+using PersonalFinanceTracker.Helpers;
 
 namespace PersonalFinanceTracker.ViewModels
 {
@@ -14,6 +15,7 @@ namespace PersonalFinanceTracker.ViewModels
         private readonly BudgetRepository _budgetRepository;
         private readonly TransactionRepository _transactionRepository;
         private readonly CategoryRepository _categoryRepository;
+        private readonly CurrencyService _currencyService;
         private ObservableCollection<BudgetItemViewModel> _budgetItems;
         private BudgetItemViewModel? _selectedBudgetItem;
 
@@ -38,6 +40,7 @@ namespace PersonalFinanceTracker.ViewModels
             _budgetRepository = new BudgetRepository();
             _transactionRepository = new TransactionRepository();
             _categoryRepository = new CategoryRepository();
+            _currencyService = new CurrencyService();
             _budgetItems = new ObservableCollection<BudgetItemViewModel>();
 
             AddBudgetCommand = new RelayCommand(ExecuteAddBudget);
@@ -61,23 +64,37 @@ namespace PersonalFinanceTracker.ViewModels
             foreach (var budget in budgets)
             {
                 // Calculate spent amount for this category in current period
-                var spent = transactions
+                // Convert all transaction amounts to the budget's currency
+                decimal spentInBudgetCurrency = 0;
+
+                var categoryTransactions = transactions
                     .Where(t => t.Category == budget.Category
                              && t.Type == "Expense"
                              && t.Date >= monthStart
-                             && t.Date <= monthEnd)
-                    .Sum(t => t.Amount);
+                             && t.Date <= monthEnd);
+
+                foreach (var transaction in categoryTransactions)
+                {
+                    // Convert transaction amount to budget currency
+                    var amountInBudgetCurrency = _currencyService.Convert(
+                        transaction.Amount,
+                        transaction.Currency,
+                        budget.Currency);
+
+                    spentInBudgetCurrency += amountInBudgetCurrency;
+                }
 
                 // Get category icon
                 var category = _categoryRepository.GetAll()
                     .FirstOrDefault(c => c.Name == budget.Category);
 
-                var budgetItem = new BudgetItemViewModel
+                var budgetItem = new BudgetItemViewModel(_currencyService)
                 {
                     BudgetId = budget.Id,
                     Category = budget.Category,
                     BudgetAmount = budget.BudgetAmount,
-                    Spent = spent,
+                    BudgetCurrency = budget.Currency,
+                    Spent = spentInBudgetCurrency,
                     Icon = category?.Icon ?? "📊"
                 };
 
@@ -102,7 +119,9 @@ namespace PersonalFinanceTracker.ViewModels
             if (SelectedBudgetItem == null) return;
 
             // Get the actual budget from database
-            var budget = _budgetRepository.GetByCategory(SelectedBudgetItem.Category);
+            var budget = _budgetRepository.GetAll()
+                .FirstOrDefault(b => b.Id == SelectedBudgetItem.BudgetId);
+
             if (budget == null) return;
 
             var dialog = new Views.AddEditBudgetWindow(budget);

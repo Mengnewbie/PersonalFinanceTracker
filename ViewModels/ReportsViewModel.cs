@@ -7,6 +7,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using PersonalFinanceTracker.Services;
+using PersonalFinanceTracker.Helpers;
 
 namespace PersonalFinanceTracker.ViewModels
 {
@@ -52,6 +53,16 @@ namespace PersonalFinanceTracker.ViewModels
         private string _selectedPeriod;
         private ObservableCollection<string> _timePeriods;
 
+        // formatted properties
+        // Add these formatted properties
+        public string TotalIncomeFormatted => CurrencyFormatter.Format(TotalIncome);
+        public string TotalExpensesFormatted => CurrencyFormatter.Format(TotalExpenses);
+        public string NetSavingsFormatted => CurrencyFormatter.Format(NetSavings);
+        public string DailyAverageFormatted => CurrencyFormatter.Format(DailyAverage);
+        public string AverageIncomeFormatted => CurrencyFormatter.Format(AverageIncome);
+        public string AverageExpenseFormatted => CurrencyFormatter.Format(AverageExpense);
+        public string LargestIncomeFormatted => CurrencyFormatter.Format(LargestIncome);
+        public string LargestExpenseFormatted => CurrencyFormatter.Format(LargestExpense);
         // Properties
         public ISeries[] ExpensePieSeries
         {
@@ -323,19 +334,36 @@ namespace PersonalFinanceTracker.ViewModels
             IncomeTransactions = incomeTransactions.Count;
             ExpenseTransactions = expenseTransactions.Count;
 
-            TotalIncome = incomeTransactions.Sum(t => t.Amount);
-            TotalExpenses = expenseTransactions.Sum(t => t.Amount);
+            // Convert all to base currency (USD) for calculations
+            var currencyService = new CurrencyService();
+
+            TotalIncome = incomeTransactions
+                .Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency));
+
+            TotalExpenses = expenseTransactions
+                .Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency));
+
             NetSavings = TotalIncome - TotalExpenses;
             SavingsRate = TotalIncome > 0 ? (NetSavings / TotalIncome) * 100 : 0;
 
             DaysAnalyzed = (endDate - startDate).Days + 1;
             DailyAverage = DaysAnalyzed > 0 ? TotalExpenses / DaysAnalyzed : 0;
 
-            AverageIncome = incomeTransactions.Any() ? incomeTransactions.Average(t => t.Amount) : 0;
-            AverageExpense = expenseTransactions.Any() ? expenseTransactions.Average(t => t.Amount) : 0;
+            AverageIncome = incomeTransactions.Any()
+                ? incomeTransactions.Average(t => currencyService.ConvertToUSD(t.Amount, t.Currency))
+                : 0;
 
-            LargestIncome = incomeTransactions.Any() ? incomeTransactions.Max(t => t.Amount) : 0;
-            LargestExpense = expenseTransactions.Any() ? expenseTransactions.Max(t => t.Amount) : 0;
+            AverageExpense = expenseTransactions.Any()
+                ? expenseTransactions.Average(t => currencyService.ConvertToUSD(t.Amount, t.Currency))
+                : 0;
+
+            LargestIncome = incomeTransactions.Any()
+                ? incomeTransactions.Max(t => currencyService.ConvertToUSD(t.Amount, t.Currency))
+                : 0;
+
+            LargestExpense = expenseTransactions.Any()
+                ? expenseTransactions.Max(t => currencyService.ConvertToUSD(t.Amount, t.Currency))
+                : 0;
 
             if (transactions.Any())
             {
@@ -350,7 +378,18 @@ namespace PersonalFinanceTracker.ViewModels
             {
                 MostUsedCategory = "N/A";
             }
+
+            // Notify formatted properties
+            OnPropertyChanged(nameof(TotalIncomeFormatted));
+            OnPropertyChanged(nameof(TotalExpensesFormatted));
+            OnPropertyChanged(nameof(NetSavingsFormatted));
+            OnPropertyChanged(nameof(DailyAverageFormatted));
+            OnPropertyChanged(nameof(AverageIncomeFormatted));
+            OnPropertyChanged(nameof(AverageExpenseFormatted));
+            OnPropertyChanged(nameof(LargestIncomeFormatted));
+            OnPropertyChanged(nameof(LargestExpenseFormatted));
         }
+
 
         private void LoadExpensePieChart(List<Models.Transaction> transactions)
         {
@@ -362,9 +401,15 @@ namespace PersonalFinanceTracker.ViewModels
                 return;
             }
 
+            var currencyService = new CurrencyService();
+
             var groupedExpenses = expenseTransactions
                 .GroupBy(t => t.Category)
-                .Select(g => new { Category = g.Key, Total = g.Sum(t => t.Amount) })
+                .Select(g => new
+                {
+                    Category = g.Key,
+                    Total = g.Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency))
+                })
                 .OrderByDescending(x => x.Total)
                 .ToList();
 
@@ -385,7 +430,7 @@ namespace PersonalFinanceTracker.ViewModels
                     DataLabelsPaint = new SolidColorPaint(SKColors.White),
                     DataLabelsSize = 12,
                     DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                    DataLabelsFormatter = point => $"${point.PrimaryValue:N0}",
+                    DataLabelsFormatter = point => CurrencyFormatter.Format((decimal)point.PrimaryValue),
                     Fill = new SolidColorPaint(color)
                 });
             }
@@ -403,9 +448,15 @@ namespace PersonalFinanceTracker.ViewModels
                 return;
             }
 
+            var currencyService = new CurrencyService();
+
             var groupedIncome = incomeTransactions
                 .GroupBy(t => t.Category)
-                .Select(g => new { Category = g.Key, Total = g.Sum(t => t.Amount) })
+                .Select(g => new
+                {
+                    Category = g.Key,
+                    Total = g.Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency))
+                })
                 .OrderByDescending(x => x.Total)
                 .ToList();
 
@@ -426,7 +477,7 @@ namespace PersonalFinanceTracker.ViewModels
                     DataLabelsPaint = new SolidColorPaint(SKColors.White),
                     DataLabelsSize = 12,
                     DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                    DataLabelsFormatter = point => $"${point.PrimaryValue:N0}",
+                    DataLabelsFormatter = point => CurrencyFormatter.Format((decimal)point.PrimaryValue),
                     Fill = new SolidColorPaint(color)
                 });
             }
@@ -436,42 +487,49 @@ namespace PersonalFinanceTracker.ViewModels
 
         private void LoadIncomeExpenseBarChart(List<Models.Transaction> transactions)
         {
-            var totalIncome = transactions.Where(t => t.Type == "Income").Sum(t => t.Amount);
-            var totalExpenses = transactions.Where(t => t.Type == "Expense").Sum(t => t.Amount);
+            var currencyService = new CurrencyService();
+
+            var totalIncome = transactions
+                .Where(t => t.Type == "Income")
+                .Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency));
+
+            var totalExpenses = transactions
+                .Where(t => t.Type == "Expense")
+                .Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency));
 
             IncomeExpenseBarSeries = new ISeries[]
             {
                 new ColumnSeries<decimal>
-                {
-                    Name = "Income",
-                    Values = new[] { totalIncome },
-                    Fill = new SolidColorPaint(SKColor.Parse("#27AE60")),
-                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                    DataLabelsSize = 14,
-                    DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Middle,
-                    DataLabelsFormatter = point => $"${point.PrimaryValue:N0}"
-                },
+        {
+            Name = "Income",
+            Values = new[] { totalIncome },
+            Fill = new SolidColorPaint(SKColor.Parse("#27AE60")),
+            DataLabelsPaint = new SolidColorPaint(SKColors.White),
+            DataLabelsSize = 14,
+            DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Middle,
+            DataLabelsFormatter = point => CurrencyFormatter.Format((decimal)point.PrimaryValue)
+        },
                 new ColumnSeries<decimal>
-                {
-                    Name = "Expenses",
-                    Values = new[] { totalExpenses },
-                    Fill = new SolidColorPaint(SKColor.Parse("#E74C3C")),
-                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                    DataLabelsSize = 14,
-                    DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Middle,
-                    DataLabelsFormatter = point => $"${point.PrimaryValue:N0}"
-                }
+        {
+            Name = "Expenses",
+            Values = new[] { totalExpenses },
+            Fill = new SolidColorPaint(SKColor.Parse("#E74C3C")),
+            DataLabelsPaint = new SolidColorPaint(SKColors.White),
+            DataLabelsSize = 14,
+            DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Middle,
+            DataLabelsFormatter = point => CurrencyFormatter.Format((decimal)point.PrimaryValue)
+        }
             };
 
             IncomeExpenseXAxes = new Axis[]
             {
                 new Axis
-                {
-                    Labels = new[] { "Total" },
-                    LabelsRotation = 0,
-                    TextSize = 12,
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100))
-                }
+        {
+            Labels = new[] { "Total" },
+            LabelsRotation = 0,
+            TextSize = 12,
+            SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100))
+        }
             };
         }
 
@@ -484,6 +542,8 @@ namespace PersonalFinanceTracker.ViewModels
             var currentDate = new DateTime(startDate.Year, startDate.Month, 1);
             var endMonth = new DateTime(endDate.Year, endDate.Month, 1);
 
+            var currencyService = new CurrencyService();
+
             while (currentDate <= endMonth)
             {
                 var monthEnd = currentDate.AddMonths(1).AddDays(-1);
@@ -492,11 +552,11 @@ namespace PersonalFinanceTracker.ViewModels
 
                 var monthIncome = transactions
                     .Where(t => t.Type == "Income" && t.Date >= currentDate && t.Date <= monthEnd)
-                    .Sum(t => t.Amount);
+                    .Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency));
 
                 var monthExpense = transactions
                     .Where(t => t.Type == "Expense" && t.Date >= currentDate && t.Date <= monthEnd)
-                    .Sum(t => t.Amount);
+                    .Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency));
 
                 incomeData.Add(monthIncome);
                 expenseData.Add(monthExpense);
@@ -507,38 +567,38 @@ namespace PersonalFinanceTracker.ViewModels
             MonthlyTrendSeries = new ISeries[]
             {
                 new LineSeries<decimal>
-                {
-                    Name = "Income",
-                    Values = incomeData,
-                    Fill = null,
-                    Stroke = new SolidColorPaint(SKColor.Parse("#27AE60")) { StrokeThickness = 3 },
-                    GeometryFill = new SolidColorPaint(SKColor.Parse("#27AE60")),
-                    GeometryStroke = new SolidColorPaint(SKColor.Parse("#27AE60")) { StrokeThickness = 3 },
-                    GeometrySize = 10,
-                    LineSmoothness = 0.5
-                },
+        {
+            Name = "Income",
+            Values = incomeData,
+            Fill = null,
+            Stroke = new SolidColorPaint(SKColor.Parse("#27AE60")) { StrokeThickness = 3 },
+            GeometryFill = new SolidColorPaint(SKColor.Parse("#27AE60")),
+            GeometryStroke = new SolidColorPaint(SKColor.Parse("#27AE60")) { StrokeThickness = 3 },
+            GeometrySize = 10,
+            LineSmoothness = 0.5
+        },
                 new LineSeries<decimal>
-                {
-                    Name = "Expenses",
-                    Values = expenseData,
-                    Fill = null,
-                    Stroke = new SolidColorPaint(SKColor.Parse("#E74C3C")) { StrokeThickness = 3 },
-                    GeometryFill = new SolidColorPaint(SKColor.Parse("#E74C3C")),
-                    GeometryStroke = new SolidColorPaint(SKColor.Parse("#E74C3C")) { StrokeThickness = 3 },
-                    GeometrySize = 10,
-                    LineSmoothness = 0.5
-                }
+        {
+            Name = "Expenses",
+            Values = expenseData,
+            Fill = null,
+            Stroke = new SolidColorPaint(SKColor.Parse("#E74C3C")) { StrokeThickness = 3 },
+            GeometryFill = new SolidColorPaint(SKColor.Parse("#E74C3C")),
+            GeometryStroke = new SolidColorPaint(SKColor.Parse("#E74C3C")) { StrokeThickness = 3 },
+            GeometrySize = 10,
+            LineSmoothness = 0.5
+        }
             };
 
             MonthlyTrendXAxes = new Axis[]
             {
                 new Axis
-                {
-                    Labels = months,
-                    LabelsRotation = -45,
-                    TextSize = 10,
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100))
-                }
+        {
+            Labels = months,
+            LabelsRotation = -45,
+            TextSize = 10,
+            SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100))
+        }
             };
         }
 
@@ -673,16 +733,17 @@ namespace PersonalFinanceTracker.ViewModels
         {
             CategoryStats.Clear();
 
+            var currencyService = new CurrencyService();
+
             var categoryGroups = transactions
                 .Where(t => t.Type == "Expense")
                 .GroupBy(t => t.Category)
                 .Select(g => new
                 {
                     Category = g.Key,
-                    Total = g.Sum(t => t.Amount),
+                    Total = g.Sum(t => currencyService.ConvertToUSD(t.Amount, t.Currency)),
                     Count = g.Count(),
-                    Average = g.Average(t => t.Amount),
-                    Percentage = 0m
+                    Average = g.Average(t => currencyService.ConvertToUSD(t.Amount, t.Currency))
                 })
                 .OrderByDescending(x => x.Total)
                 .ToList();
@@ -784,7 +845,13 @@ namespace PersonalFinanceTracker.ViewModels
         public decimal Total
         {
             get => _total;
-            set => SetProperty(ref _total, value);
+            set
+            {
+                if (SetProperty(ref _total, value))
+                {
+                    OnPropertyChanged(nameof(TotalFormatted));
+                }
+            }
         }
 
         public int Count
@@ -796,7 +863,13 @@ namespace PersonalFinanceTracker.ViewModels
         public decimal Average
         {
             get => _average;
-            set => SetProperty(ref _average, value);
+            set
+            {
+                if (SetProperty(ref _average, value))
+                {
+                    OnPropertyChanged(nameof(AverageFormatted));
+                }
+            }
         }
 
         public decimal Percentage
@@ -804,6 +877,9 @@ namespace PersonalFinanceTracker.ViewModels
             get => _percentage;
             set => SetProperty(ref _percentage, value);
         }
+
+        public string TotalFormatted => CurrencyFormatter.Format(Total);
+        public string AverageFormatted => CurrencyFormatter.Format(Average);
     }
 
     public class IncomeSourceItem : BaseViewModel

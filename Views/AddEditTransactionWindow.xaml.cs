@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Input;
+using PersonalFinanceTracker.Helpers;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Services;
-using PersonalFinanceTracker.Helpers;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
 
 namespace PersonalFinanceTracker.Views
 {
@@ -14,8 +13,11 @@ namespace PersonalFinanceTracker.Views
     {
         private readonly CategoryRepository _categoryRepository;
         private readonly TransactionRepository _transactionRepository;
+        private readonly CurrencyService _currencyService;
+        private readonly SettingsRepository _settingsRepository;
         private Transaction? _transaction;
         private bool _isEditMode;
+        private bool _hasChanges = false;
 
         public bool IsSaved { get; private set; }
 
@@ -25,41 +27,11 @@ namespace PersonalFinanceTracker.Views
             InitializeComponent();
             _categoryRepository = new CategoryRepository();
             _transactionRepository = new TransactionRepository();
+            _currencyService = new CurrencyService();
+            _settingsRepository = new SettingsRepository();
             _isEditMode = false;
 
-            // Add closing event handler
             Closing += Window_Closing;
-
-            DatePicker.SelectedDate = DateTime.Now;
-            LoadCategories("Income");
-        }
-        private void Input_Changed(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            MarkAsChanged();
-        }
-        private bool _hasChanges = false;
-
-        // Track changes
-        private void MarkAsChanged()
-        {
-            _hasChanges = true;
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (!IsSaved && _hasChanges)
-            {
-                var result = MessageBox.Show(
-                    "You have unsaved changes. Are you sure you want to close?",
-                    "Unsaved Changes",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.No)
-                {
-                    e.Cancel = true;
-                }
-            }
         }
 
         // Constructor for EDIT mode
@@ -69,7 +41,7 @@ namespace PersonalFinanceTracker.Views
             _isEditMode = true;
             Title = "Edit Transaction";
 
-            // Populate fields
+            // Pre-fill fields
             DatePicker.SelectedDate = transaction.Date;
             DescriptionTextBox.Text = transaction.Description;
             AmountTextBox.Text = transaction.Amount.ToString();
@@ -77,43 +49,113 @@ namespace PersonalFinanceTracker.Views
             // Set Type
             TypeComboBox.SelectedIndex = transaction.Type == "Income" ? 0 : 1;
 
-            // Load and select category
-            LoadCategories(transaction.Type);
-            var categoryToSelect = CategoryComboBox.Items.Cast<Category>()
-                .FirstOrDefault(c => c.Name == transaction.Category);
-            if (categoryToSelect != null)
+            // Currency will be set in Window_Loaded
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadCurrencies();
+            LoadCategories(TypeComboBox.SelectedIndex == 0 ? "Income" : "Expense");
+
+            if (_isEditMode && _transaction != null)
             {
-                CategoryComboBox.SelectedItem = categoryToSelect;
+                // Select the transaction's currency
+                var transactionCurrency = _currencyService.GetCurrency(_transaction.Currency);
+                CurrencyComboBox.SelectedItem = transactionCurrency;
+
+                // Select category
+                var categoryToSelect = CategoryComboBox.Items.Cast<Category>()
+                    .FirstOrDefault(c => c.Name == _transaction.Category);
+                if (categoryToSelect != null)
+                {
+                    CategoryComboBox.SelectedItem = categoryToSelect;
+                }
             }
+            else
+            {
+                // For new transactions, default to user's preferred currency
+                var settings = _settingsRepository.GetSettings();
+                var defaultCurrency = _currencyService.GetCurrency(settings.SelectedCurrency);
+                CurrencyComboBox.SelectedItem = defaultCurrency;
+
+                DatePicker.SelectedDate = DateTime.Now;
+            }
+
+            UpdateConversionInfo();
+        }
+
+        private void LoadCurrencies()
+        {
+            var currencies = _currencyService.GetAllCurrencies();
+            CurrencyComboBox.ItemsSource = currencies;
         }
 
         private void LoadCategories(string type)
         {
-            // Safety check
-            if (CategoryComboBox == null) return;
-
             CategoryComboBox.Items.Clear();
             var categories = _categoryRepository.GetByType(type);
             foreach (var category in categories)
             {
                 CategoryComboBox.Items.Add(category);
             }
-            if (CategoryComboBox.Items.Count > 0)
+            if (CategoryComboBox.Items.Count > 0 && !_isEditMode)
             {
                 CategoryComboBox.SelectedIndex = 0;
             }
         }
 
-        private void TypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TypeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            // Safety check
-            if (CategoryComboBox == null) return;
-
-            if (TypeComboBox.SelectedItem is ComboBoxItem selectedItem)
+            if (CategoryComboBox != null)
             {
-                string selectedType = selectedItem.Content.ToString() ?? "Income";
-                LoadCategories(selectedType);
+                var selectedType = ((System.Windows.Controls.ComboBoxItem)TypeComboBox.SelectedItem).Content.ToString();
+                LoadCategories(selectedType ?? "Income");
             }
+        }
+
+        private void CurrencyComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            UpdateConversionInfo();
+        }
+
+        private void UpdateConversionInfo()
+        {
+            if (CurrencyComboBox.SelectedItem is Currency selectedCurrency &&
+                decimal.TryParse(AmountTextBox.Text, out decimal amount) &&
+                amount > 0)
+            {
+                var settings = _settingsRepository.GetSettings();
+
+                if (selectedCurrency.Code != settings.SelectedCurrency)
+                {
+                    // Show conversion to user's display currency
+                    var convertedAmount = _currencyService.Convert(amount, selectedCurrency.Code, settings.SelectedCurrency);
+                    var displayCurrency = _currencyService.GetCurrency(settings.SelectedCurrency);
+
+                    ConversionInfoText.Text = $"{selectedCurrency.Symbol}{amount:N2} {selectedCurrency.Code} = " +
+                        $"{displayCurrency.Symbol}{convertedAmount:N2} {settings.SelectedCurrency}";
+                }
+                else
+                {
+                    ConversionInfoText.Text = $"Amount in {selectedCurrency.Code}";
+                }
+            }
+            else if (CurrencyComboBox.SelectedItem is Currency currency)
+            {
+                ConversionInfoText.Text = $"Enter amount in {currency.Code}";
+            }
+        }
+
+        private void AmountTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex(@"^[0-9.]+$");
+            e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        private void Input_Changed(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            _hasChanges = true;
+            UpdateConversionInfo();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -122,7 +164,7 @@ namespace PersonalFinanceTracker.Views
             DescriptionTextBox.Text = ValidationHelper.SanitizeInput(DescriptionTextBox.Text);
             AmountTextBox.Text = ValidationHelper.SanitizeInput(AmountTextBox.Text);
 
-            // Validation with specific error messages
+            // Validation
             if (!ValidationHelper.IsNotEmpty(DescriptionTextBox.Text))
             {
                 MessageBox.Show("Please enter a description for this transaction.",
@@ -173,6 +215,16 @@ namespace PersonalFinanceTracker.Views
                 return;
             }
 
+            if (CurrencyComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a currency.",
+                    "Validation Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                CurrencyComboBox.Focus();
+                return;
+            }
+
             if (DatePicker.SelectedDate == null)
             {
                 MessageBox.Show("Please select a date.",
@@ -183,7 +235,6 @@ namespace PersonalFinanceTracker.Views
                 return;
             }
 
-            // Check if date is not in the future
             if (DatePicker.SelectedDate.Value > DateTime.Now)
             {
                 var result = MessageBox.Show(
@@ -202,7 +253,8 @@ namespace PersonalFinanceTracker.Views
             try
             {
                 var selectedCategory = (Category)CategoryComboBox.SelectedItem;
-                var selectedType = ((ComboBoxItem)TypeComboBox.SelectedItem).Content.ToString() ?? "Income";
+                var selectedType = ((System.Windows.Controls.ComboBoxItem)TypeComboBox.SelectedItem).Content.ToString() ?? "Income";
+                var selectedCurrency = (Currency)CurrencyComboBox.SelectedItem;
 
                 if (_isEditMode && _transaction != null)
                 {
@@ -212,6 +264,7 @@ namespace PersonalFinanceTracker.Views
                     _transaction.Category = selectedCategory.Name;
                     _transaction.Type = selectedType;
                     _transaction.Amount = amount;
+                    _transaction.Currency = selectedCurrency.Code;
 
                     _transactionRepository.Update(_transaction);
                 }
@@ -224,7 +277,8 @@ namespace PersonalFinanceTracker.Views
                         Description = DescriptionTextBox.Text,
                         Category = selectedCategory.Name,
                         Type = selectedType,
-                        Amount = amount
+                        Amount = amount,
+                        Currency = selectedCurrency.Code
                     };
 
                     _transactionRepository.Add(newTransaction);
@@ -242,17 +296,28 @@ namespace PersonalFinanceTracker.Views
                     MessageBoxImage.Error);
             }
         }
-        private void AmountTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            // Allow only numbers and decimal point
-            Regex regex = new Regex(@"^[0-9.]+$");
-            e.Handled = !regex.IsMatch(e.Text);
-        }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             IsSaved = false;
             Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!IsSaved && _hasChanges)
+            {
+                var result = MessageBox.Show(
+                    "You have unsaved changes. Are you sure you want to close?",
+                    "Unsaved Changes",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }

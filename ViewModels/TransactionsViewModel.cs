@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using PersonalFinanceTracker.Commands;
+using PersonalFinanceTracker.Helpers;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Services;
 
@@ -174,7 +175,9 @@ namespace PersonalFinanceTracker.ViewModels
             get => _displayedBalance;
             set => SetProperty(ref _displayedBalance, value);
         }
-
+        public string DisplayedIncomeFormatted => CurrencyFormatter.Format(DisplayedIncome);
+        public string DisplayedExpensesFormatted => CurrencyFormatter.Format(DisplayedExpenses);
+        public string DisplayedBalanceFormatted => CurrencyFormatter.Format(DisplayedBalance);
         public ICommand AddCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
@@ -307,13 +310,29 @@ namespace PersonalFinanceTracker.ViewModels
         private void UpdateSummary()
         {
             DisplayedCount = FilteredTransactions.Count;
-            DisplayedIncome = FilteredTransactions
-                .Where(t => t.Type == "Income")
-                .Sum(t => t.Amount);
-            DisplayedExpenses = FilteredTransactions
-                .Where(t => t.Type == "Expense")
-                .Sum(t => t.Amount);
+
+            var currencyService = new CurrencyService();
+            decimal incomeInUSD = 0;
+            decimal expensesInUSD = 0;
+
+            foreach (var transaction in FilteredTransactions)
+            {
+                var amountInUSD = currencyService.ConvertToUSD(transaction.Amount, transaction.Currency);
+
+                if (transaction.Type == "Income")
+                    incomeInUSD += amountInUSD;
+                else
+                    expensesInUSD += amountInUSD;
+            }
+
+            DisplayedIncome = incomeInUSD;
+            DisplayedExpenses = expensesInUSD;
             DisplayedBalance = DisplayedIncome - DisplayedExpenses;
+
+            // Notify formatted properties
+            OnPropertyChanged(nameof(DisplayedIncomeFormatted));
+            OnPropertyChanged(nameof(DisplayedExpensesFormatted));
+            OnPropertyChanged(nameof(DisplayedBalanceFormatted));
         }
 
         private void ExecuteAdd(object? parameter)
