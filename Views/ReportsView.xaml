@@ -56,7 +56,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Income vs Expenses" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12"/>
-                        <lvc:CartesianChart Grid.Row="1" Series="{Binding IncomeExpenseBarSeries}" XAxes="{Binding IncomeExpenseXAxes}" LegendPosition="Bottom" LegendTextSize="11" Height="200"/>
+                        <lvc:CartesianChart Grid.Row="1" Series="{Binding IncomeExpenseBarSeries}" XAxes="{Binding IncomeExpenseXAxes}" LegendPosition="Bottom" LegendTextSize="11" LegendTextPaint="{Binding LegendPaint}" Height="200"/>
                     </Grid>
                 </Border>
                 <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="18" Margin="4,0,4,0">
@@ -66,7 +66,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Expense Breakdown" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12"/>
-                        <lvc:PieChart Grid.Row="1" Series="{Binding ExpensePieSeries}" LegendPosition="Right" LegendTextSize="10" InitialRotation="-90" Height="200"/>
+                        <lvc:PieChart Grid.Row="1" Series="{Binding ExpensePieSeries}" LegendPosition="Right" LegendTextSize="10" LegendTextPaint="{Binding LegendPaint}" InitialRotation="-90" Height="200"/>
                     </Grid>
                 </Border>
                 <Border Grid.Column="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="18" Margin="8,0,0,0">
@@ -76,7 +76,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Income Sources" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12"/>
-                        <lvc:PieChart Grid.Row="1" Series="{Binding IncomePieSeries}" LegendPosition="Right" LegendTextSize="10" InitialRotation="-90" Height="200"/>
+                        <lvc:PieChart Grid.Row="1" Series="{Binding IncomePieSeries}" LegendPosition="Right" LegendTextSize="10" LegendTextPaint="{Binding LegendPaint}" InitialRotation="-90" Height="200"/>
                     </Grid>
                 </Border>
             </Grid>
@@ -88,7 +88,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Monthly Trend" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
-                    <lvc:CartesianChart Grid.Row="1" Series="{Binding MonthlyTrendSeries}" XAxes="{Binding MonthlyTrendXAxes}" LegendPosition="Top" LegendTextSize="12" Height="280"/>
+                    <lvc:CartesianChart Grid.Row="1" Series="{Binding MonthlyTrendSeries}" XAxes="{Binding MonthlyTrendXAxes}" LegendPosition="Top" LegendTextSize="12" LegendTextPaint="{Binding LegendPaint}" Height="280"/>
                 </Grid>
             </Border>
             <!-- Category Trend + Day of Week -->
@@ -104,7 +104,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Top Categories Over Time" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
-                        <lvc:CartesianChart Grid.Row="1" Series="{Binding CategoryTrendSeries}" XAxes="{Binding CategoryTrendXAxes}" LegendPosition="Top" LegendTextSize="11" Height="260"/>
+                        <lvc:CartesianChart Grid.Row="1" Series="{Binding CategoryTrendSeries}" XAxes="{Binding CategoryTrendXAxes}" LegendPosition="Top" LegendTextSize="11" LegendTextPaint="{Binding LegendPaint}" Height="260"/>
                     </Grid>
                 </Border>
                 <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="22" Margin="10,0,0,0">

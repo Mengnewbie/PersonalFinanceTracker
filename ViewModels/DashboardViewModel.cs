@@ -240,8 +240,16 @@ namespace PersonalFinanceTracker.ViewModels
             _incomeChangeColor = "#27AE60";
             _expenseChangeColor = "#E74C3C";
 
+            // White legend text for dark theme
+            LegendPaint = new SolidColorPaint(SKColors.White);
+
             LoadData();
         }
+
+        /// <summary>
+        /// White paint for chart legend text on dark backgrounds.
+        /// </summary>
+        public SolidColorPaint LegendPaint { get; }
 
         private void LoadData()
         {
@@ -495,7 +503,8 @@ namespace PersonalFinanceTracker.ViewModels
                     Labels = months,
                     LabelsRotation = 0,
                     TextSize = 12,
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100))
+                    LabelsPaint = new SolidColorPaint(SKColors.White),
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(50))
                 }
             };
         }

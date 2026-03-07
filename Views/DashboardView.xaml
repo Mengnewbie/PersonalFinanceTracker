@@ -49,7 +49,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="6-Month Trend" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
-                        <lvc:CartesianChart Grid.Row="1" Series="{Binding MonthlyTrendSeries}" XAxes="{Binding MonthlyTrendXAxes}" LegendPosition="Top" LegendTextSize="12" Height="240"/>
+                        <lvc:CartesianChart Grid.Row="1" Series="{Binding MonthlyTrendSeries}" XAxes="{Binding MonthlyTrendXAxes}" LegendPosition="Top" LegendTextSize="12" LegendTextPaint="{Binding LegendPaint}" Height="240"/>
                     </Grid>
                 </Border>
                 <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="22" Margin="10,0,0,0">

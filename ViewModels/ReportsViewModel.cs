@@ -111,11 +111,19 @@ namespace PersonalFinanceTracker.ViewModels
             set => SetProperty(ref _timePeriods, value);
         }
 
+        /// <summary>
+        /// White paint for chart legend text on dark backgrounds.
+        /// </summary>
+        public SolidColorPaint LegendPaint { get; }
+
         public ReportsViewModel()
         {
             _transactionRepository = new TransactionRepository();
             _categoryRepository = new CategoryRepository();
             _currencyService = new CurrencyService();
+
+            // White legend text for dark theme
+            LegendPaint = new SolidColorPaint(SKColors.White);
 
             _expensePieSeries = Array.Empty<ISeries>();
             _incomePieSeries = Array.Empty<ISeries>();
@@ -343,7 +351,7 @@ namespace PersonalFinanceTracker.ViewModels
             IncomeExpenseXAxes = new Axis[]
             {
                 new Axis { Labels = new[] { "Total" }, LabelsRotation = 0, TextSize = 12,
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100)) }
+                    LabelsPaint = new SolidColorPaint(SKColors.White), SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(50)) }
             };
         }
 
@@ -386,7 +394,7 @@ namespace PersonalFinanceTracker.ViewModels
             MonthlyTrendXAxes = new Axis[]
             {
                 new Axis { Labels = months, LabelsRotation = -45, TextSize = 10,
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100)) }
+                    LabelsPaint = new SolidColorPaint(SKColors.White), SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(50)) }
             };
         }
 
@@ -459,7 +467,7 @@ namespace PersonalFinanceTracker.ViewModels
             CategoryTrendXAxes = new Axis[]
             {
                 new Axis { Labels = months, LabelsRotation = -45, TextSize = 10,
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100)) }
+                    LabelsPaint = new SolidColorPaint(SKColors.White), SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(50)) }
             };
         }
 
@@ -490,7 +498,7 @@ namespace PersonalFinanceTracker.ViewModels
                 {
                     Name = "Expenses", Values = amounts,
                     Fill = new SolidColorPaint(SKColor.Parse("#3498DB")),
-                    DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
                     DataLabelsSize = 11,
                     DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top,
                     // FIX: Use CurrencyFormatter instead of hardcoded "$"
@@ -503,7 +511,7 @@ namespace PersonalFinanceTracker.ViewModels
             DayOfWeekXAxes = new Axis[]
             {
                 new Axis { Labels = days, LabelsRotation = 0, TextSize = 11,
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(100)) }
+                    LabelsPaint = new SolidColorPaint(SKColors.White), SeparatorsPaint = new SolidColorPaint(SKColors.LightGray.WithAlpha(50)) }
             };
         }
 
