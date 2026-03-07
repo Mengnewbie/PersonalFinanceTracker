@@ -20,10 +20,13 @@ namespace PersonalFinanceTracker.ViewModels
             return true;
         }
 
-        // NEW METHOD: Force refresh all properties
+        /// <summary>
+        /// Force refresh all bound properties. 
+        /// Empty string notifies the UI that every property may have changed.
+        /// </summary>
         public virtual void RefreshAllProperties()
         {
-            OnPropertyChanged(string.Empty); // Empty string notifies ALL properties
+            OnPropertyChanged(string.Empty);
         }
     }
 }

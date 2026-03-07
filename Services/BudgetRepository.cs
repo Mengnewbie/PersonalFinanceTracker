@@ -34,7 +34,9 @@ namespace PersonalFinanceTracker.Services
             using var connection = DatabaseHelper.GetConnection();
             connection.Open();
 
-            string query = "SELECT * FROM Budgets ORDER BY Category;";
+            // FIX: Select columns explicitly instead of SELECT *
+            // This avoids ordinal mismatches and is more maintainable
+            string query = "SELECT Id, Category, BudgetAmount, Period, Currency FROM Budgets ORDER BY Category;";
 
             using var command = new SQLiteCommand(query, connection);
             using var reader = command.ExecuteReader();
@@ -46,18 +48,10 @@ namespace PersonalFinanceTracker.Services
                     Id = reader.GetInt32(0),
                     Category = reader.GetString(1),
                     BudgetAmount = reader.GetDecimal(2),
-                    Period = reader.GetString(3)
+                    Period = reader.GetString(3),
+                    // FIX: Use IsDBNull instead of try/catch for Currency column
+                    Currency = !reader.IsDBNull(4) ? reader.GetString(4) : "USD"
                 };
-
-                // Try to get Currency column
-                try
-                {
-                    budget.Currency = reader.GetString(4);
-                }
-                catch
-                {
-                    budget.Currency = "USD"; // Default for old records
-                }
 
                 budgets.Add(budget);
             }
@@ -71,7 +65,7 @@ namespace PersonalFinanceTracker.Services
             using var connection = DatabaseHelper.GetConnection();
             connection.Open();
 
-            string query = "SELECT * FROM Budgets WHERE Category = @Category;";
+            string query = "SELECT Id, Category, BudgetAmount, Period, Currency FROM Budgets WHERE Category = @Category;";
 
             using var command = new SQLiteCommand(query, connection);
             command.Parameters.AddWithValue("@Category", category);
@@ -80,24 +74,14 @@ namespace PersonalFinanceTracker.Services
 
             if (reader.Read())
             {
-                var budget = new Budget
+                return new Budget
                 {
                     Id = reader.GetInt32(0),
                     Category = reader.GetString(1),
                     BudgetAmount = reader.GetDecimal(2),
-                    Period = reader.GetString(3)
+                    Period = reader.GetString(3),
+                    Currency = !reader.IsDBNull(4) ? reader.GetString(4) : "USD"
                 };
-
-                try
-                {
-                    budget.Currency = reader.GetString(4);
-                }
-                catch
-                {
-                    budget.Currency = "USD";
-                }
-
-                return budget;
             }
 
             return null;

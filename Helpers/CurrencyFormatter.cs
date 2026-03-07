@@ -4,21 +4,18 @@ namespace PersonalFinanceTracker.Helpers
 {
     public static class CurrencyFormatter
     {
-        private static CurrencyService? _currencyService;
-        private static SettingsRepository? _settingsRepository;
+        // FIX: Removed static cached instances (_currencyService, _settingsRepository)
+        // They caused stale data after settings changes because ??= never refreshes
 
         public static string Format(decimal amountInBaseCurrency)
         {
             try
             {
-                _currencyService ??= new CurrencyService();
-                _settingsRepository ??= new SettingsRepository();
+                var currencyService = new CurrencyService();
+                var settingsRepository = new SettingsRepository();
 
-                var settings = _settingsRepository.GetSettings();
-
-                // amountInBaseCurrency is stored in USD (or whatever BaseCurrency is set to)
-                // Convert and format to the selected display currency
-                return _currencyService.FormatAmount(amountInBaseCurrency, settings.SelectedCurrency);
+                var settings = settingsRepository.GetSettings();
+                return currencyService.FormatAmount(amountInBaseCurrency, settings.SelectedCurrency);
             }
             catch
             {
@@ -30,11 +27,11 @@ namespace PersonalFinanceTracker.Helpers
         {
             try
             {
-                _currencyService ??= new CurrencyService();
-                _settingsRepository ??= new SettingsRepository();
+                var currencyService = new CurrencyService();
+                var settingsRepository = new SettingsRepository();
 
-                var settings = _settingsRepository.GetSettings();
-                var currency = _currencyService.GetCurrency(settings.SelectedCurrency);
+                var settings = settingsRepository.GetSettings();
+                var currency = currencyService.GetCurrency(settings.SelectedCurrency);
                 return currency.Symbol;
             }
             catch
@@ -47,8 +44,8 @@ namespace PersonalFinanceTracker.Helpers
         {
             try
             {
-                _settingsRepository ??= new SettingsRepository();
-                var settings = _settingsRepository.GetSettings();
+                var settingsRepository = new SettingsRepository();
+                var settings = settingsRepository.GetSettings();
                 return settings.SelectedCurrency;
             }
             catch

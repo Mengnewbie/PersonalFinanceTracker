@@ -3,16 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PersonalFinanceTracker.Views"
         xmlns:viewmodels="clr-namespace:PersonalFinanceTracker.ViewModels"
-        Title="{Binding Title}" 
-        Height="700" 
-        Width="1200"
-        WindowStartupLocation="CenterScreen"
-        Background="#F5F5F5">
-    
+        Title="{Binding Title}" Height="750" Width="1280"
+        MinHeight="600" MinWidth="900"
+        WindowStartupLocation="CenterScreen" Background="#0F1117">
     <Window.DataContext>
         <viewmodels:MainViewModel />
     </Window.DataContext>
-    
     <Window.InputBindings>
         <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding NavigateToDashboardCommand}"/>
         <KeyBinding Key="T" Modifiers="Ctrl" Command="{Binding NavigateToTransactionsCommand}"/>
@@ -20,227 +16,74 @@
         <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding NavigateToReportsCommand}"/>
         <KeyBinding Key="B" Modifiers="Ctrl" Command="{Binding NavigateToBudgetCommand}"/>
     </Window.InputBindings>
-    
     <Grid>
-        <!-- Define Rows: Top Bar and Main Content -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <!-- Top Bar -->
-            <RowDefinition Height="*"/>
-            <!-- Main Content -->
-        </Grid.RowDefinitions>
-
-        <!-- TOP BAR -->
-        <Border Grid.Row="0" 
-        Background="#2C3E50" 
-        Padding="20,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <!-- SIDEBAR -->
+        <Border Grid.Column="0" Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
             <Grid>
-                <TextBlock Text="Personal Finance Tracker" 
-                   Foreground="White" 
-                   FontSize="22" 
-                   FontWeight="Bold"
-                   VerticalAlignment="Center"/>
-
-                <StackPanel Orientation="Horizontal" 
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center">
-                    <Button Content="⚙️ Settings"
-                    Click="SettingsButton_Click"
-                    Background="Transparent"
-                    Foreground="White"
-                    BorderThickness="0"
-                    Padding="15,8"
-                    FontSize="14"
-                    Cursor="Hand"
-                    Margin="0,0,15,0">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#34495E"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
-                    <TextBlock Text="Welcome, User" 
-                       Foreground="White" 
-                       FontSize="14"
-                       VerticalAlignment="Center"
-                       Margin="0,0,10,0"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Margin="20,24,20,28">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="36" Height="36" CornerRadius="10" Margin="0,0,12,0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#7C6AEF" Offset="0"/>
+                                    <GradientStop Color="#A78BFA" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <TextBlock Text="₣" Foreground="White" FontSize="18" FontWeight="Bold"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="FinTrack" Foreground="{StaticResource TextBrush}" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Text="Personal Finance" Foreground="{StaticResource Text2Brush}" FontSize="10" Margin="0,-1,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="MENU" Foreground="{StaticResource Text2Brush}" FontSize="10"
+                               FontWeight="SemiBold" Margin="28,0,0,8" Opacity="0.6"/>
+                    <Button Content="  📊  Dashboard" Command="{Binding NavigateToDashboardCommand}" Style="{StaticResource SidebarButton}"/>
+                    <Button Content="  💳  Transactions" Command="{Binding NavigateToTransactionsCommand}" Style="{StaticResource SidebarButton}"/>
+                    <Button Content="  📁  Categories" Command="{Binding NavigateToCategoriesCommand}" Style="{StaticResource SidebarButton}"/>
+                    <Button Content="  📈  Reports" Command="{Binding NavigateToReportsCommand}" Style="{StaticResource SidebarButton}"/>
+                    <Button Content="  💰  Budget" Command="{Binding NavigateToBudgetCommand}" Style="{StaticResource SidebarButton}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Margin="12,0,12,16">
+                    <Border Height="1" Background="{StaticResource BorderBrush}" Margin="8,0,8,12"/>
+                    <Button Content="⚙️  Settings" Click="SettingsButton_Click" Style="{StaticResource SidebarButton}"/>
                 </StackPanel>
             </Grid>
         </Border>
-        <!-- MAIN CONTENT AREA -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
-                <!-- Sidebar -->
-                <ColumnDefinition Width="*"/>
-                <!-- Content -->
-            </Grid.ColumnDefinitions>
-
-            <!-- SIDEBAR -->
-            <Border Grid.Column="0" 
-                    Background="#34495E" 
-                    Padding="0">
-                <StackPanel Margin="0,20,0,0">
-
-                    
-                    <!-- Dashboard Button -->
-                    <Button Content="📊 Dashboard" 
-                            Command="{Binding NavigateToDashboardCommand}"
-                            Height="50"
-                            Background="#34495E"
-                            Foreground="White"
-                            FontSize="16"
-                            BorderThickness="0"
-                            HorizontalContentAlignment="Left"
-                            Padding="20,0,0,0"
-                            Cursor="Hand">  
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="#34495E"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2C3E50"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
-                    <!-- Transactions Button -->
-                    <Button Content="💰 Transactions" 
-                            Command="{Binding NavigateToTransactionsCommand}"
-                            Height="50"
-                            Background="#34495E"
-                            Foreground="White"
-                            FontSize="16"
-                            BorderThickness="0"
-                            HorizontalContentAlignment="Left"
-                            Padding="20,0,0,0"
-                            Cursor="Hand">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="#34495E"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2C3E50"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
-                    <!-- Categories Button -->
-                    <Button Content="📁 Categories" 
-                            Command="{Binding NavigateToCategoriesCommand}"
-                            Height="50"
-                            Background="#34495E"
-                            Foreground="White"
-                            FontSize="16"
-                            BorderThickness="0"
-                            HorizontalContentAlignment="Left"
-                            Padding="20,0,0,0"
-                            Cursor="Hand">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="#34495E"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2C3E50"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
-                    <!-- Reports Button -->
-                    <Button Content="📈 Reports" 
-                            Command="{Binding NavigateToReportsCommand}"
-                            Height="50"
-                            Background="#34495E"
-                            Foreground="White"
-                            FontSize="16"
-                            BorderThickness="0"
-                            HorizontalContentAlignment="Left"
-                            Padding="20,0,0,0"
-                            Cursor="Hand">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="#34495E"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2C3E50"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
-                    <!-- Budget Button -->
-                    <Button Content="💰 Budget" 
-                            Command="{Binding NavigateToBudgetCommand}"
-                            Height="50"
-                            Background="#34495E"
-                            Foreground="White"
-                            FontSize="16"
-                            BorderThickness="0"
-                            HorizontalContentAlignment="Left"
-                            Padding="20,0,0,0"
-                            Cursor="Hand">  
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="#34495E"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2C3E50"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
-                </StackPanel>
-            </Border>
-
-            <!-- CONTENT AREA (Will hold different pages) -->
-            <!-- CONTENT AREA (Will hold different pages) -->
-            <Border Grid.Column="1" 
-                    Background="White" 
-                    Margin="10"
-                    CornerRadius="5"
-                    Padding="20">   
-                <ContentControl Content="{Binding CurrentViewModel}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
-                            <local:DashboardView />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type viewmodels:TransactionsViewModel}">
-                            <local:TransactionsView />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type viewmodels:CategoriesViewModel}">
-                            <local:CategoriesView />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}">
-                            <local:ReportsView />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type viewmodels:BudgetViewModel}">
-                            <local:BudgetView />
-                        </DataTemplate>
-                    </ContentControl.Resources>
-                </ContentControl>
-            </Border>
-
-        </Grid>
-
+        <!-- CONTENT -->
+        <Border Grid.Column="1" Background="{StaticResource BgBrush}" Padding="32,24">
+            <ContentControl Content="{Binding CurrentViewModel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
+                        <local:DashboardView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:TransactionsViewModel}">
+                        <local:TransactionsView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:CategoriesViewModel}">
+                        <local:CategoriesView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}">
+                        <local:ReportsView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:BudgetViewModel}">
+                        <local:BudgetView/>
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+        </Border>
     </Grid>
 </Window>

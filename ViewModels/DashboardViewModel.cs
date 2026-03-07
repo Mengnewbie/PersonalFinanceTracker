@@ -17,6 +17,7 @@ namespace PersonalFinanceTracker.ViewModels
         private readonly TransactionRepository _transactionRepository;
         private readonly BudgetRepository _budgetRepository;
         private readonly CategoryRepository _categoryRepository;
+        private readonly CurrencyService _currencyService; // FIX: Shared instance instead of creating new ones everywhere
 
         private decimal _totalIncome;
         private decimal _totalExpenses;
@@ -52,12 +53,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _totalIncome, value))
-                {
                     OnPropertyChanged(nameof(TotalIncomeFormatted));
-                }
             }
         }
-
         public string TotalIncomeFormatted => CurrencyFormatter.Format(TotalIncome);
 
         public decimal TotalExpenses
@@ -66,12 +64,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _totalExpenses, value))
-                {
                     OnPropertyChanged(nameof(TotalExpensesFormatted));
-                }
             }
         }
-
         public string TotalExpensesFormatted => CurrencyFormatter.Format(TotalExpenses);
 
         public decimal Balance
@@ -80,12 +75,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _balance, value))
-                {
                     OnPropertyChanged(nameof(BalanceFormatted));
-                }
             }
         }
-
         public string BalanceFormatted => CurrencyFormatter.Format(Balance);
 
         public decimal ThisMonthIncome
@@ -94,12 +86,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _thisMonthIncome, value))
-                {
                     OnPropertyChanged(nameof(ThisMonthIncomeFormatted));
-                }
             }
         }
-
         public string ThisMonthIncomeFormatted => CurrencyFormatter.Format(ThisMonthIncome);
 
         public decimal ThisMonthExpenses
@@ -108,12 +97,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _thisMonthExpenses, value))
-                {
                     OnPropertyChanged(nameof(ThisMonthExpensesFormatted));
-                }
             }
         }
-
         public string ThisMonthExpensesFormatted => CurrencyFormatter.Format(ThisMonthExpenses);
 
         public decimal LastMonthIncome
@@ -122,12 +108,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _lastMonthIncome, value))
-                {
                     OnPropertyChanged(nameof(LastMonthIncomeFormatted));
-                }
             }
         }
-
         public string LastMonthIncomeFormatted => CurrencyFormatter.Format(LastMonthIncome);
 
         public decimal LastMonthExpenses
@@ -136,12 +119,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _lastMonthExpenses, value))
-                {
                     OnPropertyChanged(nameof(LastMonthExpensesFormatted));
-                }
             }
         }
-
         public string LastMonthExpensesFormatted => CurrencyFormatter.Format(LastMonthExpenses);
 
         public string IncomeChange
@@ -210,12 +190,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _averageTransaction, value))
-                {
                     OnPropertyChanged(nameof(AverageTransactionFormatted));
-                }
             }
         }
-
         public string AverageTransactionFormatted => CurrencyFormatter.Format(AverageTransaction);
 
         public decimal LargestExpense
@@ -224,12 +201,9 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _largestExpense, value))
-                {
                     OnPropertyChanged(nameof(LargestExpenseFormatted));
-                }
             }
         }
-
         public string LargestExpenseFormatted => CurrencyFormatter.Format(LargestExpense);
 
         public int TransactionCount
@@ -255,6 +229,7 @@ namespace PersonalFinanceTracker.ViewModels
             _transactionRepository = new TransactionRepository();
             _budgetRepository = new BudgetRepository();
             _categoryRepository = new CategoryRepository();
+            _currencyService = new CurrencyService();
 
             _recentTransactions = new ObservableCollection<TransactionDisplayItem>();
             _topCategories = new ObservableCollection<CategorySpendingItem>();
@@ -291,31 +266,28 @@ namespace PersonalFinanceTracker.ViewModels
             var transactions = _transactionRepository.GetAll();
             var now = DateTime.Now;
 
-            // This month
             var thisMonthStart = new DateTime(now.Year, now.Month, 1);
             var thisMonthEnd = thisMonthStart.AddMonths(1).AddDays(-1);
 
             ThisMonthIncome = transactions
                 .Where(t => t.Type == "Income" && t.Date >= thisMonthStart && t.Date <= thisMonthEnd)
-                .Sum(t => t.Amount);
+                .Sum(t => _currencyService.ConvertToUSD(t.Amount, t.Currency));
 
             ThisMonthExpenses = transactions
                 .Where(t => t.Type == "Expense" && t.Date >= thisMonthStart && t.Date <= thisMonthEnd)
-                .Sum(t => t.Amount);
+                .Sum(t => _currencyService.ConvertToUSD(t.Amount, t.Currency));
 
-            // Last month
             var lastMonthStart = thisMonthStart.AddMonths(-1);
             var lastMonthEnd = thisMonthStart.AddDays(-1);
 
             LastMonthIncome = transactions
                 .Where(t => t.Type == "Income" && t.Date >= lastMonthStart && t.Date <= lastMonthEnd)
-                .Sum(t => t.Amount);
+                .Sum(t => _currencyService.ConvertToUSD(t.Amount, t.Currency));
 
             LastMonthExpenses = transactions
                 .Where(t => t.Type == "Expense" && t.Date >= lastMonthStart && t.Date <= lastMonthEnd)
-                .Sum(t => t.Amount);
+                .Sum(t => _currencyService.ConvertToUSD(t.Amount, t.Currency));
 
-            // Calculate changes
             if (LastMonthIncome > 0)
             {
                 var incomeChangePct = ((ThisMonthIncome - LastMonthIncome) / LastMonthIncome) * 100;
@@ -336,7 +308,6 @@ namespace PersonalFinanceTracker.ViewModels
                 ExpenseChange = expenseChangePct >= 0
                     ? $"↑ {expenseChangePct:F1}% vs last month"
                     : $"↓ {Math.Abs(expenseChangePct):F1}% vs last month";
-                // Note: For expenses, increase is bad (red), decrease is good (green)
                 ExpenseChangeColor = expenseChangePct >= 0 ? "#E74C3C" : "#27AE60";
             }
             else
@@ -352,6 +323,8 @@ namespace PersonalFinanceTracker.ViewModels
             var transactions = _transactionRepository.GetAll()
                 .OrderByDescending(t => t.Date)
                 .Take(5);
+
+            // FIX: Removed Debug.WriteLine calls (were left in from development)
 
             foreach (var transaction in transactions)
             {
@@ -374,13 +347,16 @@ namespace PersonalFinanceTracker.ViewModels
             var now = DateTime.Now;
             var thisMonthStart = new DateTime(now.Year, now.Month, 1);
 
+            // FIX: Load categories ONCE instead of per-iteration (was N+1 query pattern)
+            var allCategories = _categoryRepository.GetAll();
+
             var topSpending = transactions
                 .Where(t => t.Type == "Expense" && t.Date >= thisMonthStart)
                 .GroupBy(t => t.Category)
                 .Select(g => new
                 {
                     Category = g.Key,
-                    Amount = g.Sum(t => t.Amount),
+                    Amount = g.Sum(t => _currencyService.ConvertToUSD(t.Amount, t.Currency)),
                     Count = g.Count()
                 })
                 .OrderByDescending(x => x.Amount)
@@ -388,8 +364,7 @@ namespace PersonalFinanceTracker.ViewModels
 
             foreach (var item in topSpending)
             {
-                var category = _categoryRepository.GetAll()
-                    .FirstOrDefault(c => c.Name == item.Category);
+                var category = allCategories.FirstOrDefault(c => c.Name == item.Category);
 
                 TopCategories.Add(new CategorySpendingItem
                 {
@@ -417,12 +392,14 @@ namespace PersonalFinanceTracker.ViewModels
 
             foreach (var budget in budgets)
             {
+                // FIX: Convert each transaction to the budget's currency before comparing
+                // Old code used raw t.Amount which mixes currencies (e.g. KHR vs USD)
                 var spent = transactions
                     .Where(t => t.Category == budget.Category
                              && t.Type == "Expense"
                              && t.Date >= monthStart
                              && t.Date <= monthEnd)
-                    .Sum(t => t.Amount);
+                    .Sum(t => _currencyService.Convert(t.Amount, t.Currency, budget.Currency));
 
                 var percentage = budget.BudgetAmount > 0
                     ? (spent / budget.BudgetAmount) * 100
@@ -440,14 +417,18 @@ namespace PersonalFinanceTracker.ViewModels
         private void LoadQuickStats()
         {
             var transactions = _transactionRepository.GetAll();
+
             TransactionCount = transactions.Count;
 
             if (transactions.Any())
             {
-                AverageTransaction = transactions.Average(t => t.Amount);
+                AverageTransaction = transactions
+                    .Average(t => _currencyService.ConvertToUSD(t.Amount, t.Currency));
 
                 var expenses = transactions.Where(t => t.Type == "Expense").ToList();
-                LargestExpense = expenses.Any() ? expenses.Max(t => t.Amount) : 0;
+                LargestExpense = expenses.Any()
+                    ? expenses.Max(t => _currencyService.ConvertToUSD(t.Amount, t.Currency))
+                    : 0;
             }
             else
             {
@@ -464,7 +445,6 @@ namespace PersonalFinanceTracker.ViewModels
             var incomeData = new List<decimal>();
             var expenseData = new List<decimal>();
 
-            // Get last 6 months
             for (int i = 5; i >= 0; i--)
             {
                 var month = now.AddMonths(-i);
@@ -473,16 +453,13 @@ namespace PersonalFinanceTracker.ViewModels
 
                 months.Add(month.ToString("MMM"));
 
-                var monthIncome = transactions
+                incomeData.Add(transactions
                     .Where(t => t.Type == "Income" && t.Date >= monthStart && t.Date <= monthEnd)
-                    .Sum(t => t.Amount);
+                    .Sum(t => _currencyService.ConvertToUSD(t.Amount, t.Currency)));
 
-                var monthExpense = transactions
+                expenseData.Add(transactions
                     .Where(t => t.Type == "Expense" && t.Date >= monthStart && t.Date <= monthEnd)
-                    .Sum(t => t.Amount);
-
-                incomeData.Add(monthIncome);
-                expenseData.Add(monthExpense);
+                    .Sum(t => _currencyService.ConvertToUSD(t.Amount, t.Currency)));
             }
 
             MonthlyTrendSeries = new ISeries[]
@@ -527,7 +504,6 @@ namespace PersonalFinanceTracker.ViewModels
         {
             LoadData();
 
-            // Force UI to refresh all formatted properties
             OnPropertyChanged(nameof(TotalIncomeFormatted));
             OnPropertyChanged(nameof(TotalExpensesFormatted));
             OnPropertyChanged(nameof(BalanceFormatted));
@@ -538,17 +514,11 @@ namespace PersonalFinanceTracker.ViewModels
             OnPropertyChanged(nameof(AverageTransactionFormatted));
             OnPropertyChanged(nameof(LargestExpenseFormatted));
 
-            // Refresh top categories
             foreach (var category in TopCategories)
-            {
                 category.RefreshFormatting();
-            }
 
-            // Refresh recent transactions (they auto-convert based on current settings)
             foreach (var transaction in RecentTransactions)
-            {
                 transaction.RefreshDisplay();
-            }
         }
     }
 
@@ -573,9 +543,7 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _amount, value))
-                {
                     OnPropertyChanged(nameof(AmountFormatted));
-                }
             }
         }
 
@@ -598,13 +566,13 @@ namespace PersonalFinanceTracker.ViewModels
             get => _color;
             set => SetProperty(ref _color, value);
         }
+
         public void RefreshFormatting()
         {
             OnPropertyChanged(nameof(AmountFormatted));
         }
     }
-    // Helper class for displaying transactions with currency conversion
-    // Helper class for displaying transactions with currency conversion
+
     // Helper class for displaying transactions with currency conversion
     public class TransactionDisplayItem : BaseViewModel
     {
@@ -642,9 +610,7 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _originalAmount, value))
-                {
                     OnPropertyChanged(nameof(DisplayAmount));
-                }
             }
         }
 
@@ -654,9 +620,7 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _originalCurrency, value))
-                {
                     OnPropertyChanged(nameof(DisplayAmount));
-                }
             }
         }
 
@@ -666,7 +630,14 @@ namespace PersonalFinanceTracker.ViewModels
             set => SetProperty(ref _date, value);
         }
 
-        // This converts the original amount to the user's display currency
+        /// <summary>
+        /// FIX: The old code double-converted amounts.
+        /// It called Convert(amount, from, to) then passed the result to FormatAmount()
+        /// which internally calls ConvertFromUSD() again.
+        /// 
+        /// Correct approach: convert to USD first, then let FormatAmount handle
+        /// the USD → display currency conversion.
+        /// </summary>
         public string DisplayAmount
         {
             get
@@ -675,13 +646,11 @@ namespace PersonalFinanceTracker.ViewModels
                 {
                     var settings = _settingsRepository.GetSettings();
 
-                    // Convert from original currency to display currency
-                    var convertedAmount = _currencyService.Convert(
-                        OriginalAmount,
-                        OriginalCurrency,
-                        settings.SelectedCurrency);
+                    // Step 1: Convert original amount to USD (the base currency)
+                    var amountInUSD = _currencyService.ConvertToUSD(OriginalAmount, OriginalCurrency);
 
-                    return _currencyService.FormatAmount(convertedAmount, settings.SelectedCurrency);
+                    // Step 2: FormatAmount converts from USD to display currency and formats
+                    return _currencyService.FormatAmount(amountInUSD, settings.SelectedCurrency);
                 }
                 catch
                 {
@@ -696,7 +665,6 @@ namespace PersonalFinanceTracker.ViewModels
             _settingsRepository = new SettingsRepository();
         }
 
-        // PUBLIC method to refresh display when currency changes
         public void RefreshDisplay()
         {
             OnPropertyChanged(nameof(DisplayAmount));

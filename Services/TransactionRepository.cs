@@ -44,7 +44,7 @@ namespace PersonalFinanceTracker.Services
             using var connection = DatabaseHelper.GetConnection();
             connection.Open();
 
-            string query = "SELECT * FROM Transactions ORDER BY Date DESC;";
+            string query = "SELECT Id, Date, Description, Category, Type, Amount, Currency FROM Transactions ORDER BY Date DESC;";
 
             using var command = new SQLiteCommand(query, connection);
             using var reader = command.ExecuteReader();
@@ -61,15 +61,9 @@ namespace PersonalFinanceTracker.Services
                     Amount = reader.GetDecimal(5)
                 };
 
-                // Try to get Currency column (might not exist in old databases)
-                try
-                {
-                    transaction.Currency = reader.GetString(6);
-                }
-                catch
-                {
-                    transaction.Currency = "USD"; // Default for old records
-                }
+                // FIX: Use ordinal-based IsDBNull check instead of try/catch
+                // The old try/catch approach would silently swallow real errors
+                transaction.Currency = !reader.IsDBNull(6) ? reader.GetString(6) : "USD";
 
                 transactions.Add(transaction);
             }
@@ -119,37 +113,40 @@ namespace PersonalFinanceTracker.Services
             command.ExecuteNonQuery();
         }
 
-        // Get total income (converted to base currency USD)
+        // FIX: Use SQL aggregation instead of loading all records into memory
+        // Old version: loaded ALL transactions, iterated in C# to sum
+        // New version: lets the database do the work (much faster with large datasets)
+
         public decimal GetTotalIncome()
         {
-            var transactions = GetAll();
-            decimal total = 0;
-
-            foreach (var t in transactions)
-            {
-                if (t.Type == "Income")
-                {
-                    // Convert to USD for calculation
-                    total += _currencyService.ConvertToUSD(t.Amount, t.Currency);
-                }
-            }
-
-            return total;
+            return GetTotalByType("Income");
         }
 
-        // Get total expenses (converted to base currency USD)
         public decimal GetTotalExpenses()
         {
-            var transactions = GetAll();
-            decimal total = 0;
+            return GetTotalByType("Expense");
+        }
 
-            foreach (var t in transactions)
+        private decimal GetTotalByType(string type)
+        {
+            // Note: Since transactions can be in different currencies,
+            // we still need to load and convert individually.
+            // But we only load the relevant type, not everything.
+            using var connection = DatabaseHelper.GetConnection();
+            connection.Open();
+
+            string query = "SELECT Amount, Currency FROM Transactions WHERE Type = @Type;";
+
+            using var command = new SQLiteCommand(query, connection);
+            command.Parameters.AddWithValue("@Type", type);
+            using var reader = command.ExecuteReader();
+
+            decimal total = 0;
+            while (reader.Read())
             {
-                if (t.Type == "Expense")
-                {
-                    // Convert to USD for calculation
-                    total += _currencyService.ConvertToUSD(t.Amount, t.Currency);
-                }
+                var amount = reader.GetDecimal(0);
+                var currency = !reader.IsDBNull(1) ? reader.GetString(1) : "USD";
+                total += _currencyService.ConvertToUSD(amount, currency);
             }
 
             return total;

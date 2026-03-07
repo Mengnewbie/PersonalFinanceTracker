@@ -3,326 +3,126 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:viewmodels="clr-namespace:PersonalFinanceTracker.ViewModels"
-             Background="White">
-
+             Background="Transparent">
     <UserControl.DataContext>
-        <viewmodels:DashboardViewModel />
+        <viewmodels:DashboardViewModel/>
     </UserControl.DataContext>
-
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="0,0,0,20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <!-- Header -->
-            <TextBlock Grid.Row="0" 
-                       Text="Dashboard" 
-                       FontSize="28" 
-                       FontWeight="Bold"
-                       Foreground="#2C3E50"
-                       Margin="0,0,0,20"/>
-
-            <!-- Main Statistics Cards -->
-            <UniformGrid Grid.Row="1" Rows="1" Columns="3" Margin="0,0,0,20">
-
-                <!-- Total Income Card -->
-                <Border Background="#27AE60" 
-                        CornerRadius="8" 
-                        Padding="20"
-                        Margin="0,0,10,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="Total Income" 
-                                   Foreground="White" 
-                                   FontSize="14"
-                                   Opacity="0.9"
-                                   Margin="0,0,0,5"/>
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding TotalIncomeFormatted}" 
-                                   Foreground="White" 
-                                   FontSize="32"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,10"/>
-                        <TextBlock Grid.Row="2"
-                                   Text="{Binding IncomeChange}"
-                                   Foreground="White"
-                                   FontSize="12"
-                                   Opacity="0.8"/>
-                    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="Dashboard" Foreground="{StaticResource TextBrush}" FontSize="24" FontWeight="Bold" Margin="0,0,0,24"/>
+            <!-- STAT CARDS -->
+            <UniformGrid Rows="1" Columns="3" Margin="0,0,0,20">
+                <Border Background="{StaticResource GreenDimBrush}" BorderBrush="#1A3D34" BorderThickness="1" CornerRadius="14" Padding="22" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="TOTAL INCOME" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource GreenBrush}" Opacity="0.8" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding TotalIncomeFormatted}" Foreground="{StaticResource GreenBrush}" FontSize="28" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="{Binding IncomeChange}" Foreground="{StaticResource Text2Brush}" FontSize="12"/>
+                    </StackPanel>
                 </Border>
-
-                <!-- Total Expenses Card -->
-                <Border Background="#E74C3C" 
-                        CornerRadius="8" 
-                        Padding="20"
-                        Margin="5,0,5,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="Total Expenses" 
-                                   Foreground="White" 
-                                   FontSize="14"
-                                   Opacity="0.9"
-                                   Margin="0,0,0,5"/>
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding TotalExpensesFormatted}" 
-                                   Foreground="White" 
-                                   FontSize="32"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,10"/>
-                        <TextBlock Grid.Row="2"
-                                   Text="{Binding ExpenseChange, Converter={StaticResource CurrencyConverter}}"
-                                   Foreground="White"
-                                   FontSize="12"
-                                   Opacity="0.8"/>
-                    </Grid>
+                <Border Background="{StaticResource RedDimBrush}" BorderBrush="#3D1A22" BorderThickness="1" CornerRadius="14" Padding="22" Margin="4,0,4,0">
+                    <StackPanel>
+                        <TextBlock Text="TOTAL EXPENSES" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource RedBrush}" Opacity="0.8" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding TotalExpensesFormatted}" Foreground="{StaticResource RedBrush}" FontSize="28" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="{Binding ExpenseChange}" Foreground="{StaticResource Text2Brush}" FontSize="12"/>
+                    </StackPanel>
                 </Border>
-
-                <!-- Balance Card -->
-                <Border Background="#3498DB" 
-                        CornerRadius="8" 
-                        Padding="20"
-                        Margin="10,0,0,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="Balance" 
-                                   Foreground="White" 
-                                   FontSize="14"
-                                   Opacity="0.9"
-                                   Margin="0,0,0,5"/>
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding BalanceFormatted}" 
-                                   Foreground="White" 
-                                   FontSize="32"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,10"/>
-                        <StackPanel Grid.Row="2" Orientation="Horizontal">
-                            <TextBlock Text="💰"
-                                       Foreground="White"
-                                       FontSize="12"
-                                       Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding TransactionCount, StringFormat={}{0} transactions}"
-                                       Foreground="White"
-                                       FontSize="12"
-                                       Opacity="0.8"/>
-                        </StackPanel>
-                    </Grid>
+                <Border Background="{StaticResource BlueDimBrush}" BorderBrush="#2A2450" BorderThickness="1" CornerRadius="14" Padding="22" Margin="8,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="BALANCE" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource BlueBrush}" Opacity="0.8" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding BalanceFormatted}" Foreground="{StaticResource BlueBrush}" FontSize="28" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Foreground="{StaticResource Text3Brush}" FontSize="12">
+                            <Run Text="💳 "/><Run Text="{Binding TransactionCount, Mode=OneWay}"/><Run Text=" transactions"/>
+                        </TextBlock>
+                    </StackPanel>
                 </Border>
-
             </UniformGrid>
-
-            <!-- Second Row: Monthly Trend Chart + Quick Stats -->
-            <Grid Grid.Row="2" Margin="0,0,0,20">
+            <!-- ROW 2: Chart + Quick Stats -->
+            <Grid Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
-                <!-- Monthly Trend Chart -->
-                <Border Grid.Column="0"
-                        Background="White"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="20"
-                        Margin="0,0,10,0">
+                <Border Grid.Column="0" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="22" Margin="0,0,10,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="6-Month Trend"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="#2C3E50"
-                                   Margin="0,0,0,15"/>
-
-                        <lvc:CartesianChart Grid.Row="1"
-                                            Series="{Binding MonthlyTrendSeries}"
-                                            XAxes="{Binding MonthlyTrendXAxes}"
-                                            LegendPosition="Top"
-                                            LegendTextSize="12"
-                                            Height="250"/>
+                        <TextBlock Grid.Row="0" Text="6-Month Trend" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
+                        <lvc:CartesianChart Grid.Row="1" Series="{Binding MonthlyTrendSeries}" XAxes="{Binding MonthlyTrendXAxes}" LegendPosition="Top" LegendTextSize="12" Height="240"/>
                     </Grid>
                 </Border>
-
-                <!-- Quick Stats -->
-                <Border Grid.Column="1"
-                        Background="White"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="20"
-                        Margin="10,0,0,0">
+                <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="22" Margin="10,0,0,0">
                     <StackPanel>
-                        <TextBlock Text="Quick Stats"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="#2C3E50"
-                                   Margin="0,0,0,15"/>
-
-                        <Border Background="#E8F8F5"
-                                CornerRadius="5"
-                                Padding="12"
-                                Margin="0,0,0,10">
+                        <TextBlock Text="Quick Stats" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
+                        <Border Background="{StaticResource Surface2Brush}" CornerRadius="10" Padding="14" Margin="0,0,0,10">
                             <StackPanel>
-                                <TextBlock Text="Average Transaction"
-                                           FontSize="11"
-                                           Foreground="#16A085"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding AverageTransactionFormatted}"
-                                           FontSize="20"
-                                           FontWeight="Bold"
-                                           Foreground="#16A085"/>
+                                <TextBlock Text="Avg Transaction" FontSize="11" Foreground="{StaticResource Text3Brush}" Margin="0,0,0,6"/>
+                                <TextBlock Text="{Binding AverageTransactionFormatted}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource GreenBrush}"/>
                             </StackPanel>
                         </Border>
-
-                        <Border Background="#FADBD8"
-                                CornerRadius="5"
-                                Padding="12"
-                                Margin="0,0,0,10">
+                        <Border Background="{StaticResource Surface2Brush}" CornerRadius="10" Padding="14" Margin="0,0,0,10">
                             <StackPanel>
-                                <TextBlock Text="Largest Expense"
-                                           FontSize="11"
-                                           Foreground="#C0392B"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding LargestExpenseFormatted}"
-                                           FontSize="20"
-                                           FontWeight="Bold"
-                                           Foreground="#C0392B"/>
+                                <TextBlock Text="Largest Expense" FontSize="11" Foreground="{StaticResource Text3Brush}" Margin="0,0,0,6"/>
+                                <TextBlock Text="{Binding LargestExpenseFormatted}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource RedBrush}"/>
                             </StackPanel>
                         </Border>
-
-                        <Border Background="#EBF5FB"
-                                CornerRadius="5"
-                                Padding="12">
+                        <Border Background="{StaticResource Surface2Brush}" CornerRadius="10" Padding="14">
                             <StackPanel>
-                                <TextBlock Text="This Month"
-                                           FontSize="11"
-                                           Foreground="#2980B9"
-                                           Margin="0,0,0,5"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="↑"
-                                               FontSize="16"
-                                               Foreground="#27AE60"
-                                               Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding ThisMonthIncomeFormatted}"
-                                               FontSize="14"
-                                               FontWeight="SemiBold"
-                                               Foreground="#27AE60"/>
+                                <TextBlock Text="This Month" FontSize="11" Foreground="{StaticResource Text3Brush}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="↑ " FontSize="14" Foreground="{StaticResource GreenBrush}"/>
+                                    <TextBlock Text="{Binding ThisMonthIncomeFormatted}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource GreenBrush}"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                    <TextBlock Text="↓"
-                                               FontSize="16"
-                                               Foreground="#E74C3C"
-                                               Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding ThisMonthExpensesFormatted}"
-                                               FontSize="14"
-                                               FontWeight="SemiBold"
-                                               Foreground="#E74C3C"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="↓ " FontSize="14" Foreground="{StaticResource RedBrush}"/>
+                                    <TextBlock Text="{Binding ThisMonthExpensesFormatted}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource RedBrush}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
                     </StackPanel>
                 </Border>
             </Grid>
-
-            <!-- Third Row: Recent Transactions + Top Categories + Budget Summary -->
-            <Grid Grid.Row="3">
+            <!-- ROW 3: Recent + Top Categories + Budget -->
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
                 <!-- Recent Transactions -->
-                <!-- Recent Transactions -->
-                <Border Grid.Column="0"
-        Background="White"
-        BorderBrush="#E0E0E0"
-        BorderThickness="1"
-        CornerRadius="8"
-        Padding="20"
-        Margin="0,0,10,0">
+                <Border Grid.Column="0" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="22" Margin="0,0,8,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                   Text="Recent Transactions"
-                   FontSize="18"
-                   FontWeight="SemiBold"
-                   Foreground="#2C3E50"
-                   Margin="0,0,0,15"/>
-
+                        <TextBlock Grid.Row="0" Text="Recent Transactions" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,14"/>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                             <ItemsControl ItemsSource="{Binding RecentTransactions}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="#F8F9FA"
-                                CornerRadius="5"
-                                Padding="12"
-                                Margin="0,0,0,8">
+                                        <Border Background="{StaticResource Surface2Brush}" CornerRadius="10" Padding="12" Margin="0,0,0,6">
                                             <Grid>
                                                 <StackPanel>
-                                                    <TextBlock Text="{Binding Description}"
-                                               FontWeight="SemiBold"
-                                               FontSize="13"
-                                               Foreground="#2C3E50"/>
-                                                    <TextBlock Text="{Binding Category}"
-                                               FontSize="11"
-                                               Foreground="#7F8C8D"
-                                               Margin="0,2,0,0"/>
+                                                    <TextBlock Text="{Binding Description}" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource TextBrush}"/>
+                                                    <TextBlock Text="{Binding Category}" FontSize="11" Foreground="{StaticResource Text3Brush}" Margin="0,2,0,0"/>
                                                 </StackPanel>
-                                                <StackPanel HorizontalAlignment="Right">
-                                                    <TextBlock FontSize="13"
-                                               FontWeight="SemiBold">
+                                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+                                                    <TextBlock FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Right">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="#27AE60"/>
+                                                                <Setter Property="Text" Value="{Binding DisplayAmount}"/>
+                                                                <Setter Property="Foreground" Value="#2DD4A8"/>
                                                                 <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Type}" Value="Income">
-                                                                        <Setter Property="Text" Value="{Binding DisplayAmount, StringFormat=+{0}}"/>
-                                                                        <Setter Property="Foreground" Value="#27AE60"/>
-                                                                    </DataTrigger>
                                                                     <DataTrigger Binding="{Binding Type}" Value="Expense">
-                                                                        <Setter Property="Text" Value="{Binding DisplayAmount, StringFormat=-{0}}"/>
-                                                                        <Setter Property="Foreground" Value="#E74C3C"/>
+                                                                        <Setter Property="Foreground" Value="#F06C75"/>
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </TextBlock.Style>
                                                     </TextBlock>
-                                                    <TextBlock Text="{Binding Date, StringFormat={}{0:MMM dd}}"
-                                               FontSize="10"
-                                               Foreground="#95A5A6"
-                                               HorizontalAlignment="Right"
-                                               Margin="0,2,0,0"/>
+                                                    <TextBlock Text="{Binding Date, StringFormat={}{0:MMM dd}}" FontSize="10" HorizontalAlignment="Right" Foreground="{StaticResource Text3Brush}" Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -332,64 +132,29 @@
                         </ScrollViewer>
                     </Grid>
                 </Border>
-
-                <!-- Top Spending Categories -->
-                <Border Grid.Column="1"
-                        Background="White"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="20"
-                        Margin="5,0,5,0">
+                <!-- Top Spending -->
+                <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="22" Margin="4,0,4,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="Top Spending (This Month)"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="#2C3E50"
-                                   Margin="0,0,0,15"/>
-
+                        <TextBlock Grid.Row="0" Text="Top Spending" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,14"/>
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding TopCategories}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#F8F9FA"
-                                            CornerRadius="5"
-                                            Padding="12"
-                                            Margin="0,0,0,10">
+                                    <Border Background="{StaticResource Surface2Brush}" CornerRadius="10" Padding="12" Margin="0,0,0,8">
                                         <Grid>
                                             <StackPanel Orientation="Horizontal">
-                                                <Border Width="35"
-                                                        Height="35"
-                                                        CornerRadius="17.5"
-                                                        Background="{Binding Color}"
-                                                        Margin="0,0,10,0">
-                                                    <TextBlock Text="{Binding Icon}"
-                                                               FontSize="18"
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"/>
+                                                <Border Width="36" Height="36" CornerRadius="10" Background="{StaticResource SurfaceBrush}" Margin="0,0,10,0">
+                                                    <TextBlock Text="{Binding Icon}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Border>
                                                 <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Category}"
-                                                               FontWeight="SemiBold"
-                                                               FontSize="13"
-                                                               Foreground="#2C3E50"/>
-                                                    <TextBlock Text="{Binding TransactionCount, StringFormat={}{0} transactions}"
-                                                               FontSize="10"
-                                                               Foreground="#7F8C8D"
-                                                               Margin="0,2,0,0"/>
+                                                    <TextBlock Text="{Binding Category}" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource TextBrush}"/>
+                                                    <TextBlock FontSize="10" Foreground="{StaticResource Text3Brush}" Margin="0,2,0,0"><Run Text="{Binding TransactionCount, Mode=OneWay}"/><Run Text=" transactions"/></TextBlock>
                                                 </StackPanel>
                                             </StackPanel>
-                                            <TextBlock Text="{Binding AmountFormatted}"
-                                                       FontSize="15"
-                                                       FontWeight="Bold"
-                                                       Foreground="#E74C3C"
-                                                       HorizontalAlignment="Right"
-                                                       VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding AmountFormatted}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource RedBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -397,111 +162,47 @@
                         </ItemsControl>
                     </Grid>
                 </Border>
-
-                <!-- Budget Summary -->
-                <Border Grid.Column="2"
-                        Background="White"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="20"
-                        Margin="10,0,0,0">
+                <!-- Budget Overview -->
+                <Border Grid.Column="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="22" Margin="8,0,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="Budget Overview"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="#2C3E50"
-                                   Margin="0,0,0,15"/>
-
+                        <TextBlock Grid.Row="0" Text="Budget Overview" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,14"/>
                         <StackPanel Grid.Row="1">
-                            <Border Background="#D5F4E6"
-                                    CornerRadius="5"
-                                    Padding="12"
-                                    Margin="0,0,0,10">
+                            <Border Background="{StaticResource GreenDimBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,8">
                                 <Grid>
                                     <StackPanel>
-                                        <TextBlock Text="On Track"
-                                                   FontSize="12"
-                                                   Foreground="#27AE60"
-                                                   Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding BudgetsOnTrack}"
-                                                   FontSize="28"
-                                                   FontWeight="Bold"
-                                                   Foreground="#27AE60"/>
+                                        <TextBlock Text="On Track" FontSize="11" Foreground="{StaticResource GreenBrush}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding BudgetsOnTrack}" FontSize="26" FontWeight="Bold" Foreground="{StaticResource GreenBrush}"/>
                                     </StackPanel>
-                                    <TextBlock Text="✓"
-                                               FontSize="40"
-                                               Foreground="#27AE60"
-                                               Opacity="0.2"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="✓" FontSize="36" Opacity="0.15" Foreground="{StaticResource GreenBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
-
-                            <Border Background="#FCF3CF"
-                                    CornerRadius="5"
-                                    Padding="12"
-                                    Margin="0,0,0,10">
+                            <Border Background="{StaticResource OrangeDimBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,8">
                                 <Grid>
                                     <StackPanel>
-                                        <TextBlock Text="Warning"
-                                                   FontSize="12"
-                                                   Foreground="#F39C12"
-                                                   Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding BudgetsWarning}"
-                                                   FontSize="28"
-                                                   FontWeight="Bold"
-                                                   Foreground="#F39C12"/>
+                                        <TextBlock Text="Warning" FontSize="11" Foreground="{StaticResource OrangeBrush}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding BudgetsWarning}" FontSize="26" FontWeight="Bold" Foreground="{StaticResource OrangeBrush}"/>
                                     </StackPanel>
-                                    <TextBlock Text="⚠"
-                                               FontSize="40"
-                                               Foreground="#F39C12"
-                                               Opacity="0.2"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="⚠" FontSize="36" Opacity="0.15" Foreground="{StaticResource OrangeBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
-
-                            <Border Background="#FADBD8"
-                                    CornerRadius="5"
-                                    Padding="12">
+                            <Border Background="{StaticResource RedDimBrush}" CornerRadius="10" Padding="14">
                                 <Grid>
                                     <StackPanel>
-                                        <TextBlock Text="Over Budget"
-                                                   FontSize="12"
-                                                   Foreground="#E74C3C"
-                                                   Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding BudgetsOverBudget}"
-                                                   FontSize="28"
-                                                   FontWeight="Bold"
-                                                   Foreground="#E74C3C"/>
+                                        <TextBlock Text="Over Budget" FontSize="11" Foreground="{StaticResource RedBrush}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding BudgetsOverBudget}" FontSize="26" FontWeight="Bold" Foreground="{StaticResource RedBrush}"/>
                                     </StackPanel>
-                                    <TextBlock Text="⚠"
-                                               FontSize="40"
-                                               Foreground="#E74C3C"
-                                               Opacity="0.2"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="⚠" FontSize="36" Opacity="0.15" Foreground="{StaticResource RedBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
-
-                            <TextBlock Text="{Binding TotalBudgets, StringFormat=Total: {0} budgets}"
-                                       FontSize="11"
-                                       Foreground="#95A5A6"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,15,0,0"/>
+                            <TextBlock FontSize="11" Foreground="{StaticResource Text3Brush}" HorizontalAlignment="Center" Margin="0,12,0,0"><Run Text="Total: "/><Run Text="{Binding TotalBudgets, Mode=OneWay}"/><Run Text=" budgets"/></TextBlock>
                         </StackPanel>
                     </Grid>
                 </Border>
-
             </Grid>
-
-        </Grid>
+        </StackPanel>
     </ScrollViewer>
 </UserControl>
