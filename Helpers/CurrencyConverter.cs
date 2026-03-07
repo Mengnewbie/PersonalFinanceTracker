@@ -7,8 +7,9 @@ namespace PersonalFinanceTracker.Helpers
 {
     public class CurrencyConverter : IValueConverter
     {
-        private static CurrencyService? _currencyService;
-        private static SettingsRepository? _settingsRepository;
+        // FIX: Create fresh instances each time to avoid stale cached settings
+        // The previous version used static ??= which meant settings changes
+        // were never reflected until app restart
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -16,15 +17,14 @@ namespace PersonalFinanceTracker.Helpers
             {
                 try
                 {
-                    _currencyService ??= new CurrencyService();
-                    _settingsRepository ??= new SettingsRepository();
+                    var currencyService = new CurrencyService();
+                    var settingsRepository = new SettingsRepository();
 
-                    var settings = _settingsRepository.GetSettings();
-                    return _currencyService.FormatAmount(amount, settings.SelectedCurrency);
+                    var settings = settingsRepository.GetSettings();
+                    return currencyService.FormatAmount(amount, settings.SelectedCurrency);
                 }
                 catch
                 {
-                    // Fallback to default USD formatting if something fails
                     return $"${amount:N2}";
                 }
             }

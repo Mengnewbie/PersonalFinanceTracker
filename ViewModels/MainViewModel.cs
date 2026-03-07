@@ -7,6 +7,7 @@ namespace PersonalFinanceTracker.ViewModels
     {
         private string _title;
         private BaseViewModel _currentViewModel;
+        private string _activePage;
 
         public string Title
         {
@@ -20,6 +21,16 @@ namespace PersonalFinanceTracker.ViewModels
             set => SetProperty(ref _currentViewModel, value);
         }
 
+        /// <summary>
+        /// Tracks which page is active so the sidebar can highlight it.
+        /// Values: "Dashboard", "Transactions", "Categories", "Reports", "Budget"
+        /// </summary>
+        public string ActivePage
+        {
+            get => _activePage;
+            set => SetProperty(ref _activePage, value);
+        }
+
         // Navigation Commands
         public ICommand NavigateToDashboardCommand { get; }
         public ICommand NavigateToTransactionsCommand { get; }
@@ -29,40 +40,24 @@ namespace PersonalFinanceTracker.ViewModels
 
         public MainViewModel()
         {
-            _title = "Personal Finance Tracker";
+            _title = "FinTrack — Personal Finance Tracker";
+            _activePage = "Dashboard";
             _currentViewModel = new DashboardViewModel();
 
-            // Initialize commands
-            NavigateToDashboardCommand = new RelayCommand(ExecuteNavigateToDashboard);
-            NavigateToTransactionsCommand = new RelayCommand(ExecuteNavigateToTransactions);
-            NavigateToCategoriesCommand = new RelayCommand(ExecuteNavigateToCategories);
-            NavigateToReportsCommand = new RelayCommand(ExecuteNavigateToReports);
-            NavigateToBudgetCommand = new RelayCommand(ExecuteNavigateToBudget);
+            NavigateToDashboardCommand = new RelayCommand(_ => NavigateTo<DashboardViewModel>("Dashboard"));
+            NavigateToTransactionsCommand = new RelayCommand(_ => NavigateTo<TransactionsViewModel>("Transactions"));
+            NavigateToCategoriesCommand = new RelayCommand(_ => NavigateTo<CategoriesViewModel>("Categories"));
+            NavigateToReportsCommand = new RelayCommand(_ => NavigateTo<ReportsViewModel>("Reports"));
+            NavigateToBudgetCommand = new RelayCommand(_ => NavigateTo<BudgetViewModel>("Budget"));
         }
 
-        private void ExecuteNavigateToDashboard(object? parameter)
+        private void NavigateTo<T>(string pageName) where T : BaseViewModel, new()
         {
-            CurrentViewModel = new DashboardViewModel();
-        }
+            // Skip if already on the same page type
+            if (CurrentViewModel is T) return;
 
-        private void ExecuteNavigateToTransactions(object? parameter)
-        {
-            CurrentViewModel = new TransactionsViewModel();
-        }
-
-        private void ExecuteNavigateToCategories(object? parameter)
-        {
-            CurrentViewModel = new CategoriesViewModel();
-        }
-
-        private void ExecuteNavigateToReports(object? parameter)
-        {
-            CurrentViewModel = new ReportsViewModel();
-        }
-
-        private void ExecuteNavigateToBudget(object? parameter)
-        {
-            CurrentViewModel = new BudgetViewModel();
+            ActivePage = pageName;
+            CurrentViewModel = new T();
         }
     }
 }

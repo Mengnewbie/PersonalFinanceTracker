@@ -6,7 +6,6 @@ using System.Windows.Input;
 using PersonalFinanceTracker.Commands;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Services;
-using PersonalFinanceTracker.Helpers;
 
 namespace PersonalFinanceTracker.ViewModels
 {
@@ -16,6 +15,7 @@ namespace PersonalFinanceTracker.ViewModels
         private readonly TransactionRepository _transactionRepository;
         private readonly CategoryRepository _categoryRepository;
         private readonly CurrencyService _currencyService;
+
         private ObservableCollection<BudgetItemViewModel> _budgetItems;
         private BudgetItemViewModel? _selectedBudgetItem;
 
@@ -44,8 +44,8 @@ namespace PersonalFinanceTracker.ViewModels
             _budgetItems = new ObservableCollection<BudgetItemViewModel>();
 
             AddBudgetCommand = new RelayCommand(ExecuteAddBudget);
-            EditBudgetCommand = new RelayCommand(ExecuteEditBudget, CanExecuteEditDelete);
-            DeleteBudgetCommand = new RelayCommand(ExecuteDeleteBudget, CanExecuteEditDelete);
+            EditBudgetCommand = new RelayCommand(ExecuteEditBudget, _ => SelectedBudgetItem != null);
+            DeleteBudgetCommand = new RelayCommand(ExecuteDeleteBudget, _ => SelectedBudgetItem != null);
 
             LoadBudgets();
         }
@@ -53,42 +53,28 @@ namespace PersonalFinanceTracker.ViewModels
         private void LoadBudgets()
         {
             BudgetItems.Clear();
+
             var budgets = _budgetRepository.GetAll();
             var transactions = _transactionRepository.GetAll();
+            var allCategories = _categoryRepository.GetAll(); // FIX: Load once, not per-budget
 
-            // Get current month's start and end dates
             var now = DateTime.Now;
             var monthStart = new DateTime(now.Year, now.Month, 1);
             var monthEnd = monthStart.AddMonths(1).AddDays(-1);
 
             foreach (var budget in budgets)
             {
-                // Calculate spent amount for this category in current period
-                // Convert all transaction amounts to the budget's currency
-                decimal spentInBudgetCurrency = 0;
-
-                var categoryTransactions = transactions
+                // Sum expenses for this category, converting each to budget currency
+                var spentInBudgetCurrency = transactions
                     .Where(t => t.Category == budget.Category
                              && t.Type == "Expense"
                              && t.Date >= monthStart
-                             && t.Date <= monthEnd);
+                             && t.Date <= monthEnd)
+                    .Sum(t => _currencyService.Convert(t.Amount, t.Currency, budget.Currency));
 
-                foreach (var transaction in categoryTransactions)
-                {
-                    // Convert transaction amount to budget currency
-                    var amountInBudgetCurrency = _currencyService.Convert(
-                        transaction.Amount,
-                        transaction.Currency,
-                        budget.Currency);
+                var category = allCategories.FirstOrDefault(c => c.Name == budget.Category);
 
-                    spentInBudgetCurrency += amountInBudgetCurrency;
-                }
-
-                // Get category icon
-                var category = _categoryRepository.GetAll()
-                    .FirstOrDefault(c => c.Name == budget.Category);
-
-                var budgetItem = new BudgetItemViewModel(_currencyService)
+                BudgetItems.Add(new BudgetItemViewModel(_currencyService)
                 {
                     BudgetId = budget.Id,
                     Category = budget.Category,
@@ -96,9 +82,7 @@ namespace PersonalFinanceTracker.ViewModels
                     BudgetCurrency = budget.Currency,
                     Spent = spentInBudgetCurrency,
                     Icon = category?.Icon ?? "📊"
-                };
-
-                BudgetItems.Add(budgetItem);
+                });
             }
         }
 
@@ -110,7 +94,8 @@ namespace PersonalFinanceTracker.ViewModels
             if (dialog.IsSaved)
             {
                 LoadBudgets();
-                MessageBox.Show("Budget added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Budget added successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -118,10 +103,8 @@ namespace PersonalFinanceTracker.ViewModels
         {
             if (SelectedBudgetItem == null) return;
 
-            // Get the actual budget from database
             var budget = _budgetRepository.GetAll()
                 .FirstOrDefault(b => b.Id == SelectedBudgetItem.BudgetId);
-
             if (budget == null) return;
 
             var dialog = new Views.AddEditBudgetWindow(budget);
@@ -130,7 +113,8 @@ namespace PersonalFinanceTracker.ViewModels
             if (dialog.IsSaved)
             {
                 LoadBudgets();
-                MessageBox.Show("Budget updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Budget updated successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -148,18 +132,11 @@ namespace PersonalFinanceTracker.ViewModels
             {
                 _budgetRepository.Delete(SelectedBudgetItem.BudgetId);
                 LoadBudgets();
-                MessageBox.Show("Budget deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Budget deleted successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
-        private bool CanExecuteEditDelete(object? parameter)
-        {
-            return SelectedBudgetItem != null;
-        }
-
-        public void RefreshBudgets()
-        {
-            LoadBudgets();
-        }
+        public void RefreshBudgets() => LoadBudgets();
     }
 }

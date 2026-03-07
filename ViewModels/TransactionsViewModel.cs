@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -13,8 +12,9 @@ namespace PersonalFinanceTracker.ViewModels
 {
     public class TransactionsViewModel : BaseViewModel
     {
-        private TransactionRepository _transactionRepository;
-        private CategoryRepository _categoryRepository;
+        private readonly TransactionRepository _transactionRepository;
+        private readonly CategoryRepository _categoryRepository;
+        private readonly CurrencyService _currencyService;
 
         private ObservableCollection<Transaction> _transactions;
         private ObservableCollection<Transaction> _filteredTransactions;
@@ -34,20 +34,17 @@ namespace PersonalFinanceTracker.ViewModels
 
         // Summary
         private int _displayedCount;
+        private int _totalCount;
         private decimal _displayedIncome;
         private decimal _displayedExpenses;
         private decimal _displayedBalance;
-        private int _totalCount;
+
+        #region Properties
 
         public ObservableCollection<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
-        }
-        public int TotalCount
-        {
-            get => _totalCount;
-            set => SetProperty(ref _totalCount, value);
         }
 
         public ObservableCollection<Transaction> FilteredTransactions
@@ -62,76 +59,46 @@ namespace PersonalFinanceTracker.ViewModels
             set => SetProperty(ref _selectedTransaction, value);
         }
 
+        public int TotalCount
+        {
+            get => _totalCount;
+            set => SetProperty(ref _totalCount, value);
+        }
+
         public string SearchText
         {
             get => _searchText;
-            set
-            {
-                if (SetProperty(ref _searchText, value))
-                {
-                    ApplyFilters();
-                }
-            }
+            set { if (SetProperty(ref _searchText, value)) ApplyFilters(); }
         }
 
         public string SelectedTypeFilter
         {
             get => _selectedTypeFilter;
-            set
-            {
-                if (SetProperty(ref _selectedTypeFilter, value))
-                {
-                    ApplyFilters();
-                }
-            }
+            set { if (SetProperty(ref _selectedTypeFilter, value)) ApplyFilters(); }
         }
 
         public string SelectedCategoryFilter
         {
             get => _selectedCategoryFilter;
-            set
-            {
-                if (SetProperty(ref _selectedCategoryFilter, value))
-                {
-                    ApplyFilters();
-                }
-            }
+            set { if (SetProperty(ref _selectedCategoryFilter, value)) ApplyFilters(); }
         }
 
         public DateTime? StartDate
         {
             get => _startDate;
-            set
-            {
-                if (SetProperty(ref _startDate, value))
-                {
-                    ApplyFilters();
-                }
-            }
+            set { if (SetProperty(ref _startDate, value)) ApplyFilters(); }
         }
 
         public DateTime? EndDate
         {
             get => _endDate;
-            set
-            {
-                if (SetProperty(ref _endDate, value))
-                {
-                    ApplyFilters();
-                }
-            }
+            set { if (SetProperty(ref _endDate, value)) ApplyFilters(); }
         }
 
         public string SelectedSortOption
         {
             get => _selectedSortOption;
-            set
-            {
-                if (SetProperty(ref _selectedSortOption, value))
-                {
-                    ApplyFilters();
-                }
-            }
+            set { if (SetProperty(ref _selectedSortOption, value)) ApplyFilters(); }
         }
 
         public ObservableCollection<string> TypeFilters
@@ -175,19 +142,29 @@ namespace PersonalFinanceTracker.ViewModels
             get => _displayedBalance;
             set => SetProperty(ref _displayedBalance, value);
         }
+
+        // Formatted display properties
         public string DisplayedIncomeFormatted => CurrencyFormatter.Format(DisplayedIncome);
         public string DisplayedExpensesFormatted => CurrencyFormatter.Format(DisplayedExpenses);
         public string DisplayedBalanceFormatted => CurrencyFormatter.Format(DisplayedBalance);
+
+        #endregion
+
+        #region Commands
+
         public ICommand AddCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand ClearFiltersCommand { get; }
         public ICommand RowDoubleClickCommand { get; }
 
+        #endregion
+
         public TransactionsViewModel()
         {
             _transactionRepository = new TransactionRepository();
             _categoryRepository = new CategoryRepository();
+            _currencyService = new CurrencyService();
 
             _transactions = new ObservableCollection<Transaction>();
             _filteredTransactions = new ObservableCollection<Transaction>();
@@ -197,7 +174,6 @@ namespace PersonalFinanceTracker.ViewModels
             _selectedCategoryFilter = "All";
             _selectedSortOption = "Date (Newest First)";
 
-            // Initialize filters
             _typeFilters = new ObservableCollection<string> { "All", "Income", "Expense" };
             _categoryFilters = new ObservableCollection<string> { "All" };
             _sortOptions = new ObservableCollection<string>
@@ -211,50 +187,46 @@ namespace PersonalFinanceTracker.ViewModels
             };
 
             AddCommand = new RelayCommand(ExecuteAdd);
-            EditCommand = new RelayCommand(ExecuteEdit, CanExecuteEditDelete);
-            DeleteCommand = new RelayCommand(ExecuteDelete, CanExecuteEditDelete);
+            EditCommand = new RelayCommand(ExecuteEdit, _ => SelectedTransaction != null);
+            DeleteCommand = new RelayCommand(ExecuteDelete, _ => SelectedTransaction != null);
             ClearFiltersCommand = new RelayCommand(ExecuteClearFilters);
-            RowDoubleClickCommand = new RelayCommand(ExecuteRowDoubleClick);
+            RowDoubleClickCommand = new RelayCommand(ExecuteEdit);
 
             LoadCategoryFilters();
             LoadTransactions();
         }
+
+        #region Data Loading
 
         private void LoadCategoryFilters()
         {
             CategoryFilters.Clear();
             CategoryFilters.Add("All");
 
-            var categories = _categoryRepository.GetAll()
-                .OrderBy(c => c.Name)
-                .Select(c => c.Name);
-
-            foreach (var category in categories)
-            {
-                CategoryFilters.Add(category);
-            }
+            foreach (var name in _categoryRepository.GetAll().OrderBy(c => c.Name).Select(c => c.Name))
+                CategoryFilters.Add(name);
         }
 
         private void LoadTransactions()
         {
             Transactions.Clear();
-            var transactions = _transactionRepository.GetAll();
 
-            foreach (var transaction in transactions)
-            {
+            foreach (var transaction in _transactionRepository.GetAll())
                 Transactions.Add(transaction);
-            }
 
-            TotalCount = Transactions.Count; 
-
+            TotalCount = Transactions.Count;
             ApplyFilters();
         }
+
+        #endregion
+
+        #region Filtering & Sorting
 
         private void ApplyFilters()
         {
             var filtered = Transactions.AsEnumerable();
 
-            // Search filter
+            // Search
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 filtered = filtered.Where(t =>
@@ -262,30 +234,21 @@ namespace PersonalFinanceTracker.ViewModels
                     t.Category.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Type filter
+            // Type
             if (SelectedTypeFilter != "All")
-            {
                 filtered = filtered.Where(t => t.Type == SelectedTypeFilter);
-            }
 
-            // Category filter
+            // Category
             if (SelectedCategoryFilter != "All")
-            {
                 filtered = filtered.Where(t => t.Category == SelectedCategoryFilter);
-            }
 
-            // Date range filter
+            // Date range
             if (StartDate.HasValue)
-            {
                 filtered = filtered.Where(t => t.Date >= StartDate.Value);
-            }
-
             if (EndDate.HasValue)
-            {
                 filtered = filtered.Where(t => t.Date <= EndDate.Value);
-            }
 
-            // Sorting
+            // Sort
             filtered = SelectedSortOption switch
             {
                 "Date (Newest First)" => filtered.OrderByDescending(t => t.Date),
@@ -297,12 +260,9 @@ namespace PersonalFinanceTracker.ViewModels
                 _ => filtered.OrderByDescending(t => t.Date)
             };
 
-            // Update filtered collection
             FilteredTransactions.Clear();
             foreach (var transaction in filtered)
-            {
                 FilteredTransactions.Add(transaction);
-            }
 
             UpdateSummary();
         }
@@ -311,29 +271,30 @@ namespace PersonalFinanceTracker.ViewModels
         {
             DisplayedCount = FilteredTransactions.Count;
 
-            var currencyService = new CurrencyService();
-            decimal incomeInUSD = 0;
-            decimal expensesInUSD = 0;
+            decimal incomeUSD = 0, expensesUSD = 0;
 
-            foreach (var transaction in FilteredTransactions)
+            foreach (var t in FilteredTransactions)
             {
-                var amountInUSD = currencyService.ConvertToUSD(transaction.Amount, transaction.Currency);
+                var usd = _currencyService.ConvertToUSD(t.Amount, t.Currency);
 
-                if (transaction.Type == "Income")
-                    incomeInUSD += amountInUSD;
+                if (t.Type == "Income")
+                    incomeUSD += usd;
                 else
-                    expensesInUSD += amountInUSD;
+                    expensesUSD += usd;
             }
 
-            DisplayedIncome = incomeInUSD;
-            DisplayedExpenses = expensesInUSD;
-            DisplayedBalance = DisplayedIncome - DisplayedExpenses;
+            DisplayedIncome = incomeUSD;
+            DisplayedExpenses = expensesUSD;
+            DisplayedBalance = incomeUSD - expensesUSD;
 
-            // Notify formatted properties
             OnPropertyChanged(nameof(DisplayedIncomeFormatted));
             OnPropertyChanged(nameof(DisplayedExpensesFormatted));
             OnPropertyChanged(nameof(DisplayedBalanceFormatted));
         }
+
+        #endregion
+
+        #region Commands
 
         private void ExecuteAdd(object? parameter)
         {
@@ -392,19 +353,8 @@ namespace PersonalFinanceTracker.ViewModels
             SelectedSortOption = "Date (Newest First)";
         }
 
-        private void ExecuteRowDoubleClick(object? parameter)
-        {
-            ExecuteEdit(parameter);
-        }
+        #endregion
 
-        private bool CanExecuteEditDelete(object? parameter)
-        {
-            return SelectedTransaction != null;
-        }
-
-        public void RefreshTransactions()
-        {
-            LoadTransactions();
-        }
+        public void RefreshTransactions() => LoadTransactions();
     }
 }

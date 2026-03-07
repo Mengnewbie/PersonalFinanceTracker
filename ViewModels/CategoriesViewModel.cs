@@ -10,6 +10,7 @@ namespace PersonalFinanceTracker.ViewModels
     public class CategoriesViewModel : BaseViewModel
     {
         private readonly CategoryRepository _categoryRepository;
+
         private ObservableCollection<Category> _categories;
         private Category? _selectedCategory;
 
@@ -35,8 +36,8 @@ namespace PersonalFinanceTracker.ViewModels
             _categories = new ObservableCollection<Category>();
 
             AddCommand = new RelayCommand(ExecuteAdd);
-            EditCommand = new RelayCommand(ExecuteEdit, CanExecuteEditDelete);
-            DeleteCommand = new RelayCommand(ExecuteDelete, CanExecuteEditDelete);
+            EditCommand = new RelayCommand(ExecuteEdit, _ => SelectedCategory != null);
+            DeleteCommand = new RelayCommand(ExecuteDelete, _ => SelectedCategory != null);
 
             LoadCategories();
         }
@@ -44,11 +45,9 @@ namespace PersonalFinanceTracker.ViewModels
         private void LoadCategories()
         {
             Categories.Clear();
-            var categories = _categoryRepository.GetAll();
-            foreach (var category in categories)
-            {
+
+            foreach (var category in _categoryRepository.GetAll())
                 Categories.Add(category);
-            }
         }
 
         private void ExecuteAdd(object? parameter)
@@ -59,7 +58,8 @@ namespace PersonalFinanceTracker.ViewModels
             if (dialog.IsSaved)
             {
                 LoadCategories();
-                MessageBox.Show("Category added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Category added successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -73,7 +73,8 @@ namespace PersonalFinanceTracker.ViewModels
             if (dialog.IsSaved)
             {
                 LoadCategories();
-                MessageBox.Show("Category updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Category updated successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -90,19 +91,12 @@ namespace PersonalFinanceTracker.ViewModels
             if (result == MessageBoxResult.Yes)
             {
                 _categoryRepository.Delete(SelectedCategory.Id);
-                LoadCategories(); // Refresh the list
-                MessageBox.Show("Category deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadCategories();
+                MessageBox.Show("Category deleted successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
-        private bool CanExecuteEditDelete(object? parameter)
-        {
-            return SelectedCategory != null;
-        }
-
-        public void RefreshCategories()
-        {
-            LoadCategories();
-        }
+        public void RefreshCategories() => LoadCategories();
     }
 }

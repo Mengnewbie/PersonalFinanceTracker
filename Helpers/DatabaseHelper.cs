@@ -24,14 +24,22 @@ namespace PersonalFinanceTracker.Helpers
                 Directory.CreateDirectory(directory);
             }
 
-            // Create database file if it doesn't exist
-            if(!File.Exists(DatabasePath))
-{
+            bool isNewDb = !File.Exists(DatabasePath);
+
+            if (isNewDb)
+            {
                 SQLiteConnection.CreateFile(DatabasePath);
-                CreateTables();
-                InsertDefaultCategories();
             }
 
+            // FIX: Always ensure tables exist and run migrations
+            // This handles both new installs AND existing DBs that need schema updates
+            CreateTables();
+            RunMigrations();
+
+            if (isNewDb)
+            {
+                InsertDefaultCategories();
+            }
         }
 
         private static void CreateTables()
@@ -40,62 +48,104 @@ namespace PersonalFinanceTracker.Helpers
             connection.Open();
 
             string createCategoriesTable = @"
-        CREATE TABLE IF NOT EXISTS Categories (
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            Name TEXT NOT NULL,
-            Type TEXT NOT NULL,
-            Icon TEXT,
-            Color TEXT
-        );";
+                CREATE TABLE IF NOT EXISTS Categories (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Name TEXT NOT NULL,
+                    Type TEXT NOT NULL,
+                    Icon TEXT,
+                    Color TEXT
+                );";
 
             string createTransactionsTable = @"
-        CREATE TABLE IF NOT EXISTS Transactions (
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            Date TEXT NOT NULL,
-            Description TEXT NOT NULL,
-            Category TEXT NOT NULL,
-            Type TEXT NOT NULL,
-            Amount REAL NOT NULL,
-            Currency TEXT NOT NULL DEFAULT 'USD'
-        );";
+                CREATE TABLE IF NOT EXISTS Transactions (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Date TEXT NOT NULL,
+                    Description TEXT NOT NULL,
+                    Category TEXT NOT NULL,
+                    Type TEXT NOT NULL,
+                    Amount REAL NOT NULL,
+                    Currency TEXT NOT NULL DEFAULT 'USD'
+                );";
 
             string createBudgetsTable = @"
-        CREATE TABLE IF NOT EXISTS Budgets (
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            Category TEXT NOT NULL,
-            BudgetAmount REAL NOT NULL,
-            Period TEXT NOT NULL,
-            Currency TEXT NOT NULL DEFAULT 'USD'
-        );";
+                CREATE TABLE IF NOT EXISTS Budgets (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Category TEXT NOT NULL,
+                    BudgetAmount REAL NOT NULL,
+                    Period TEXT NOT NULL,
+                    Currency TEXT NOT NULL DEFAULT 'USD'
+                );";
 
             string createSettingsTable = @"
-        CREATE TABLE IF NOT EXISTS Settings (
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            SelectedCurrency TEXT NOT NULL DEFAULT 'USD',
-            BaseCurrency TEXT NOT NULL DEFAULT 'USD'
-        );";
+                CREATE TABLE IF NOT EXISTS Settings (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    SelectedCurrency TEXT NOT NULL DEFAULT 'USD',
+                    BaseCurrency TEXT NOT NULL DEFAULT 'USD'
+                );";
 
             using (var command = new SQLiteCommand(createCategoriesTable, connection))
-            {
                 command.ExecuteNonQuery();
-            }
 
             using (var command = new SQLiteCommand(createTransactionsTable, connection))
-            {
                 command.ExecuteNonQuery();
-            }
 
             using (var command = new SQLiteCommand(createBudgetsTable, connection))
-            {
                 command.ExecuteNonQuery();
-            }
 
             using (var command = new SQLiteCommand(createSettingsTable, connection))
-            {
                 command.ExecuteNonQuery();
-            }
 
             InitializeSettings(connection);
+        }
+
+        /// <summary>
+        /// FIX: Run schema migrations for existing databases.
+        /// Adds missing columns that may not exist in older DB versions.
+        /// </summary>
+        private static void RunMigrations()
+        {
+            using var connection = new SQLiteConnection(ConnectionString);
+            connection.Open();
+
+            // Migration: Add Currency column to Transactions if missing
+            AddColumnIfNotExists(connection, "Transactions", "Currency", "TEXT NOT NULL DEFAULT 'USD'");
+
+            // Migration: Add Currency column to Budgets if missing
+            AddColumnIfNotExists(connection, "Budgets", "Currency", "TEXT NOT NULL DEFAULT 'USD'");
+
+            // Migration: Add BaseCurrency column to Settings if missing
+            AddColumnIfNotExists(connection, "Settings", "BaseCurrency", "TEXT NOT NULL DEFAULT 'USD'");
+        }
+
+        private static void AddColumnIfNotExists(SQLiteConnection connection, string table, string column, string definition)
+        {
+            try
+            {
+                // PRAGMA table_info returns column metadata; check if column exists
+                using var pragmaCmd = new SQLiteCommand($"PRAGMA table_info({table});", connection);
+                using var reader = pragmaCmd.ExecuteReader();
+
+                bool columnExists = false;
+                while (reader.Read())
+                {
+                    if (reader.GetString(1).Equals(column, StringComparison.OrdinalIgnoreCase))
+                    {
+                        columnExists = true;
+                        break;
+                    }
+                }
+
+                if (!columnExists)
+                {
+                    using var alterCmd = new SQLiteCommand(
+                        $"ALTER TABLE {table} ADD COLUMN {column} {definition};", connection);
+                    alterCmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                // Silently continue if migration fails (column may already exist)
+            }
         }
 
         private static void InitializeSettings(SQLiteConnection connection)
@@ -121,7 +171,6 @@ namespace PersonalFinanceTracker.Helpers
                 INSERT INTO Categories (Name, Type, Icon, Color) 
                 VALUES (@Name, @Type, @Icon, @Color);";
 
-            // Default Expense Categories
             var expenseCategories = new[]
             {
                 new { Name = "Food & Dining", Type = "Expense", Icon = "🍔", Color = "#E74C3C" },
@@ -134,7 +183,6 @@ namespace PersonalFinanceTracker.Helpers
                 new { Name = "Other Expenses", Type = "Expense", Icon = "📦", Color = "#95A5A6" }
             };
 
-            // Default Income Categories
             var incomeCategories = new[]
             {
                 new { Name = "Salary", Type = "Income", Icon = "💰", Color = "#27AE60" },
@@ -143,7 +191,6 @@ namespace PersonalFinanceTracker.Helpers
                 new { Name = "Other Income", Type = "Income", Icon = "💵", Color = "#1ABC9C" }
             };
 
-            // Insert all categories
             foreach (var category in expenseCategories)
             {
                 using var command = new SQLiteCommand(insertQuery, connection);

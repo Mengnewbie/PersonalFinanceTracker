@@ -1,26 +1,53 @@
-﻿using PersonalFinanceTracker.Helpers;
+﻿using System.Collections.Generic;
 using PersonalFinanceTracker.Services;
 
 namespace PersonalFinanceTracker.ViewModels
 {
     public class BudgetItemViewModel : BaseViewModel
     {
+        private static readonly HashSet<string> NoDecimalCurrencies = new() { "JPY", "KRW", "VND", "KHR" };
+
         private readonly CurrencyService _currencyService;
+
+        private int _budgetId;
         private string _category;
-        private decimal _budgetAmount;
         private string _budgetCurrency;
+        private string _icon;
+        private decimal _budgetAmount;
         private decimal _spent;
         private decimal _remaining;
         private double _progressPercentage;
         private string _statusColor;
         private string _statusText;
-        private string _icon;
-        private int _budgetId;
+
+        #region Properties
+
+        public int BudgetId
+        {
+            get => _budgetId;
+            set => SetProperty(ref _budgetId, value);
+        }
 
         public string Category
         {
             get => _category;
             set => SetProperty(ref _category, value);
+        }
+
+        public string BudgetCurrency
+        {
+            get => _budgetCurrency;
+            set
+            {
+                if (SetProperty(ref _budgetCurrency, value))
+                    NotifyFormattedProperties();
+            }
+        }
+
+        public string Icon
+        {
+            get => _icon;
+            set => SetProperty(ref _icon, value);
         }
 
         public decimal BudgetAmount
@@ -32,20 +59,6 @@ namespace PersonalFinanceTracker.ViewModels
                 {
                     CalculateProgress();
                     OnPropertyChanged(nameof(BudgetAmountFormatted));
-                }
-            }
-        }
-
-        public string BudgetCurrency
-        {
-            get => _budgetCurrency;
-            set
-            {
-                if (SetProperty(ref _budgetCurrency, value))
-                {
-                    OnPropertyChanged(nameof(BudgetAmountFormatted));
-                    OnPropertyChanged(nameof(SpentFormatted));
-                    OnPropertyChanged(nameof(RemainingFormatted));
                 }
             }
         }
@@ -69,9 +82,7 @@ namespace PersonalFinanceTracker.ViewModels
             set
             {
                 if (SetProperty(ref _remaining, value))
-                {
                     OnPropertyChanged(nameof(RemainingFormatted));
-                }
             }
         }
 
@@ -93,31 +104,24 @@ namespace PersonalFinanceTracker.ViewModels
             set => SetProperty(ref _statusText, value);
         }
 
-        public string Icon
-        {
-            get => _icon;
-            set => SetProperty(ref _icon, value);
-        }
+        #endregion
 
-        public int BudgetId
-        {
-            get => _budgetId;
-            set => SetProperty(ref _budgetId, value);
-        }
+        #region Formatted Properties
 
-        // Formatted properties
         public string BudgetAmountFormatted => FormatCurrency(BudgetAmount);
         public string SpentFormatted => FormatCurrency(Spent);
         public string RemainingFormatted => FormatCurrency(Remaining);
+
+        #endregion
 
         public BudgetItemViewModel(CurrencyService currencyService)
         {
             _currencyService = currencyService;
             _category = string.Empty;
             _budgetCurrency = "USD";
+            _icon = "📊";
             _statusColor = "#27AE60";
             _statusText = "On Track";
-            _icon = "📊";
         }
 
         private string FormatCurrency(decimal amount)
@@ -125,49 +129,43 @@ namespace PersonalFinanceTracker.ViewModels
             if (_currencyService == null) return $"${amount:N2}";
 
             var currency = _currencyService.GetCurrency(BudgetCurrency);
+            var format = NoDecimalCurrencies.Contains(BudgetCurrency) ? "N0" : "N2";
 
-            // Special formatting for currencies without decimals
-            if (BudgetCurrency == "JPY" || BudgetCurrency == "KRW" ||
-                BudgetCurrency == "VND" || BudgetCurrency == "KHR")
-            {
-                return $"{currency.Symbol}{amount:N0}";
-            }
-
-            return $"{currency.Symbol}{amount:N2}";
+            return $"{currency.Symbol}{amount.ToString(format)}";
         }
 
         private void CalculateProgress()
         {
             Remaining = BudgetAmount - Spent;
 
-            if (BudgetAmount > 0)
+            if (BudgetAmount <= 0)
             {
-                ProgressPercentage = (double)(Spent / BudgetAmount * 100);
+                ProgressPercentage = 0;
+                return;
+            }
 
-                // Determine status and color
-                if (ProgressPercentage >= 100)
-                {
-                    StatusColor = "#E74C3C"; // Red - Over budget
-                    StatusText = "Over Budget!";
-                }
-                else if (ProgressPercentage >= 80)
-                {
-                    StatusColor = "#F39C12"; // Orange - Warning
-                    StatusText = "Warning";
-                }
-                else
-                {
-                    StatusColor = "#27AE60"; // Green - On track
-                    StatusText = "On Track";
-                }
+            ProgressPercentage = (double)(Spent / BudgetAmount * 100);
+
+            if (ProgressPercentage >= 100)
+            {
+                StatusColor = "#E74C3C";
+                StatusText = "Over Budget!";
+            }
+            else if (ProgressPercentage >= 80)
+            {
+                StatusColor = "#F39C12";
+                StatusText = "Warning";
             }
             else
             {
-                ProgressPercentage = 0;
+                StatusColor = "#27AE60";
+                StatusText = "On Track";
             }
         }
 
-        public void RefreshFormatting()
+        public void RefreshFormatting() => NotifyFormattedProperties();
+
+        private void NotifyFormattedProperties()
         {
             OnPropertyChanged(nameof(BudgetAmountFormatted));
             OnPropertyChanged(nameof(SpentFormatted));
